@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useNavigate } from 'react-router-dom'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -16,7 +16,8 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 
 function Header(props) {
-  const navItems = ['Home', 'About', 'Contact']
+  const navigate = useNavigate()
+  const navItems = ['Home', 'About me', 'Contact']
   const { window } = props
   const [mobileOpen, setMobileOpen] = React.useState(false)
 
@@ -60,7 +61,10 @@ function Header(props) {
               fontSize: '24px',
             }}
           >
-            Malena's Tutoring Services
+            {/* Fine Arts by Malena */}
+            {/* Malena Hirst Fine Arts */}
+            Malena Hirst
+            {/* Malena Hirst */}
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
@@ -87,7 +91,7 @@ function Header(props) {
               fontWeight: 'bold',
             }}
           >
-            Malena's Tutoring Services
+            Malena Hirst
           </Typography>
         </Toolbar>
       </AppBar>
@@ -107,7 +111,7 @@ function Header(props) {
         >
           <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
             <Typography variant="h6" sx={{ my: 2 }}>
-              Malena's Tutoring Services
+              Malena Hirst
             </Typography>
             <Divider />
             <List>{drawerItems}</List>

@@ -1,35 +1,37 @@
 import React from 'react'
 import muiStyles from '../styles/muiStyles'
-const { Typography, Button } = muiStyles
+import HomeHeroSection from './HomeHeroSection'
+
+const { Typography, Button, Box } = muiStyles
 
 const HomePage = () => {
   return (
     <>
-      <Typography
-        className="large-title-text"
-        variant="h3"
-        color="primary"
-        sx={{ fontWeight: 'bold' }}
-      >
-        Malena Hirst
-      </Typography>
-      <Typography variant="subtitle">Private tutor</Typography>
-      <div
-        style={{
+      <HomeHeroSection />
+      {/* <Box
+        sx={{
           display: 'flex',
           gap: '15px',
           alignItems: 'center',
-          marginTop: '-15px',
+          justifyContent: 'space-evenly',
+          // border: '1px solid red',
         }}
       >
-        <Typography>Art</Typography>
-        <div style={{ borderRight: '1px solid lightgrey', height: '20px' }} />
-        <Typography>Singing</Typography>
-        <div style={{ borderRight: '1px solid lightgrey', height: '20px' }} />
-        <Typography>Acting</Typography>
-        <div style={{ borderRight: '1px solid lightgrey', height: '20px' }} />
-        <Typography>Piano</Typography>
-      </div>
+        <img
+          style={{ maxWidth: '650px' }}
+          src="https://images.unsplash.com/photo-1589996448606-27d38c70f3bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGFydGlzdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
+        />
+        <Box sx={{}}>
+          <Typography variant="h3" color="primary" sx={{ fontWeight: 'bold' }}>
+            Malena Hirst
+          </Typography>
+          <Typography variant="subtitle">
+            Hi! I do all the stuffs! I teach classes, tutor, and do commissioned
+            projects. I cover most fine arts, such as theater/acting,
+            art/painting, singing, and music.
+          </Typography>
+        </Box>
+      </Box>
 
       <Button
         variant="contained"
@@ -52,13 +54,28 @@ const HomePage = () => {
       />
 
       <div className="home-page-about-me">
-        <Typography sx={{ textTransform: 'uppercase', fontWeight: 'bold', textAlign: 'center' }}>
+        <Typography
+          sx={{
+            textTransform: 'uppercase',
+            fontWeight: 'bold',
+            textAlign: 'center',
+          }}
+        >
           Tutoring services in my home
         </Typography>
-        <Typography sx={{ width: '100%', maxWidth: '800px'}}>
-          My name is Malena Hirst. I graduated from Missouri Western State University in 2014. I received my Bachelor's in Elementary Education. I have my Teaching Certification for grades 1 - 6. I have been an elementary teacher for the past 4 years. I taught in the Cumberland County School District in North Carolina. I then moved back to Kansas City and taught in the North Kansas City School District. Before becoming a teacher, I worked in before and after school childcare for 3 years. Working and educating children is my passion, and I can't in my home. There are dogs and cats present in the home, but they will not be in the room during session.
+        <Typography sx={{ width: '100%', maxWidth: '800px' }}>
+          My name is Malena Hirst. I graduated from Missouri Western State
+          University in 2014. I received my Bachelor's in Elementary Education.
+          I have my Teaching Certification for grades 1 - 6. I have been an
+          elementary teacher for the past 4 years. I taught in the Cumberland
+          County School District in North Carolina. I then moved back to Kansas
+          City and taught in the North Kansas City School District. Before
+          becoming a teacher, I worked in before and after school childcare for
+          3 years. Working and educating children is my passion, and I can't in
+          my home. There are dogs and cats present in the home, but they will
+          not be in the room during session.
         </Typography>
-      </div>
+      </div> */}
     </>
   )
 }

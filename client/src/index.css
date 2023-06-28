@@ -12,6 +12,18 @@ code {
     monospace;
 }
 
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.gap-10 {
+  gap: 10px;
+}
+
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
 .pages-container-main {
   display: flex;
   flex-direction: column;
