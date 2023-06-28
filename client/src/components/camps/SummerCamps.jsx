@@ -1,19 +1,32 @@
-import React from 'react'
-import muiStyles from '../styles/muiStyles'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import muiStyles from '../../styles/muiStyles'
 import { useNavigate } from 'react-router-dom'
-import { summerCamps } from '../assetts/data'
+// import { summerCamps } from '../../assetts/data'
 
 const { Typography, Button, Box, Card } = muiStyles
 
 const SummerCamps = () => {
   const navigate = useNavigate()
-  const mappedCampCards = summerCamps.map((camp, index) => {
+  const [summerCamps, setSummerCamps] = useState([])
+
+  useEffect(() => {
+    axios.get('/api/camps').then(({data}) => {
+      if (Array.isArray(data)) {
+        setSummerCamps(data)
+      }
+    }).catch(console.error)
+  }, [])
+  
+  const mappedCampCards = summerCamps.length > 0 && summerCamps.map((camp, index) => {
     let ageRange
     if (camp.ageRange[1] === 100) {
       ageRange = camp.ageRange[0] + '+'
     } else {
       ageRange = camp.ageRange.join(' - ')
     }
+
+    document.title = 'Malena Hirst - Summer Camps'
 
     return (
       <Card key={index} elevation={2} sx={{ maxWidth: 320 }}>
@@ -133,13 +146,15 @@ const SummerCamps = () => {
       >
         {mappedCampCards}
       </Box>
-      <Typography sx={{
-        opacity: 0.7,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        marginTop: '40px',
-        fontSize: { xs: '18px', sm: '22px' },
-      }}>
+      <Typography
+        sx={{
+          opacity: 0.7,
+          textAlign: 'center',
+          fontWeight: 'bold',
+          marginTop: '40px',
+          fontSize: { xs: '18px', sm: '22px' },
+        }}
+      >
         More camps coming soon! Check back later for more info.
       </Typography>
     </Box>

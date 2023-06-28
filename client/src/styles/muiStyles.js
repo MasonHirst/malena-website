@@ -93,6 +93,7 @@ import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
+import DialogActions from '@mui/material/DialogActions'
 
 const LightTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -107,6 +108,7 @@ const LightTooltip = styled(({ className, ...props }) => (
 }))
 
 let muiStyles = {
+  DialogActions,
   InputLabel,
   FormControl,
   Radio,

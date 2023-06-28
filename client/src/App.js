@@ -3,8 +3,8 @@ import HomePage from './components/HomePage'
 import muiStyles from './styles/muiStyles'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Footer from './components/Footer'
-import SummerCamps from './components/SummerCamps'
-import SummerCampPage from './components/SummerCampPage'
+import SummerCamps from './components/camps/SummerCamps'
+import SummerCampPage from './components/camps/SummerCampPage'
 import './reset.css'
 
 const { Box } = muiStyles
@@ -30,7 +30,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/camps" element={<SummerCamps />} />
-            <Route path="/camps/:campId" element={<SummerCampPage />} />
+            <Route path="/camps/:campName" element={<SummerCampPage />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Box>
