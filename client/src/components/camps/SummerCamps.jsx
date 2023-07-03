@@ -24,20 +24,13 @@ const SummerCamps = () => {
       .then(({ data }) => {
         returnInfo = data
       })
-      .catch((err) => {
-        console.log(err)
-        setCampsError(
-          'There was a problem loading camps. Please try again in a few minutes.'
-        )
-      })
+      .catch(console.error)
       .finally(() => {
-        // Calculate the elapsed time
         const elapsedTime = Date.now() - startTime
-        // Calculate the remaining time to wait (minimum 500ms)
-        const remainingTime = Math.max(800 - elapsedTime, 0)
-        // Set the loading state to false after the remaining time
+        const remainingTime = Math.max(600 - elapsedTime, 0)
         loadingTimer = setTimeout(() => {
-          setSummerCamps(returnInfo)
+          if (Array.isArray(returnInfo)) setSummerCamps(returnInfo)
+          else setCampsError('There was a problem loading camps. Please try again in a few minutes.')
           setCampsLoading(false)
         }, remainingTime)
       })
@@ -59,22 +52,9 @@ const SummerCamps = () => {
   const mappedCampCards =
     summerCamps.length > 0 &&
     sortByStartDate(summerCamps).map((camp, index) => {
-      let ageRange
-      if (camp.ageRange[1] === 100) {
-        ageRange = camp.ageRange[0] + '+'
-      } else {
-        ageRange = camp.ageRange.join(' - ')
-      }
-
       document.title = 'Malena Hirst - Summer Camps'
 
-      return (
-        <CampPreviewCard
-          key={index}
-          camp={camp}
-          ageRange={ageRange}
-          />
-      )
+      return <CampPreviewCard key={index} camp={camp} />
     })
 
   return (
@@ -151,22 +131,9 @@ const SummerCamps = () => {
         ) : (
           mappedCampCards
         )}
-
-        {campsError && (
-          <Typography
-            sx={{
-              opacity: 0.7,
-              textAlign: 'center',
-              fontWeight: 'bold',
-              marginTop: '40px',
-              fontSize: { xs: '18px', sm: '22px' },
-            }}
-          >
-            {campsError}
-          </Typography>
-        )}
       </Box>
       <Typography
+        color={campsError && 'error'}
         sx={{
           opacity: 0.7,
           textAlign: 'center',
@@ -175,7 +142,9 @@ const SummerCamps = () => {
           fontSize: { xs: '18px', sm: '22px' },
         }}
       >
-        More camps coming soon! Check back later for more info.
+        {campsError
+          ? campsError
+          : 'More camps coming soon! Check back later for more info.'}
       </Typography>
     </Box>
   )

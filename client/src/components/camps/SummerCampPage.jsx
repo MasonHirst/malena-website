@@ -116,6 +116,22 @@ const SummerCampPage = () => {
     if (participants.filter((val) => val.name).length < 1) {
       return setFormError('Please add at least one participant')
     }
+
+    // if needGuardianSignup is true, make sure all participants have a name and age. otherwise, just make sure every participant has a name
+    if (
+      camp.needGuardianSignup &&
+      participants.filter((val) => val.name && val.age).length !==
+        participants.length
+    ) {
+      return setFormError('All participant fields must be filled.')
+    } else if (
+      !camp.needGuardianSignup &&
+      participants.filter((val) => val.name).length !== participants.length
+    ) {
+      return setFormError('All participant fields must be filled.')
+    }
+
+
     setShowConfirmInfoDialog(true)
   }
 

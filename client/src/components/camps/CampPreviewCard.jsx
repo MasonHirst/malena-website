@@ -4,8 +4,15 @@ import { useNavigate } from 'react-router-dom'
 
 const { Typography, Button, Box, Card, Skeleton } = muiStyles
 
-const CampPreviewCard = ({ camp, ageRange }) => {
+const CampPreviewCard = ({ camp }) => {
   const navigate = useNavigate()
+
+  let ageRange
+  if (camp.ageRange[1] === 100) {
+    ageRange = camp.ageRange[0] + '+'
+  } else {
+    ageRange = camp.ageRange.join(' - ')
+  }
 
   return (
     <Card elevation={2} sx={{ maxWidth: 320 }}>
