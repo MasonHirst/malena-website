@@ -1,126 +1,121 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import CssBaseline from '@mui/material/CssBaseline'
-import Divider from '@mui/material/Divider'
-import Drawer from '@mui/material/Drawer'
-import IconButton from '@mui/material/IconButton'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemText from '@mui/material/ListItemText'
-import MenuIcon from '@mui/icons-material/Menu'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
+import muiStyles from '../styles/muiStyles'
+import { useMediaQuery } from '@mui/material'
 
-function Header(props) {
+const { Typography, Button, Box, Drawer, MenuItem, MenuIcon, IconButton } =
+  muiStyles
+
+function Header() {
+  const isSmallScreen = useMediaQuery('(max-width: 600px)')
   const navigate = useNavigate()
-  const navItems = ['Home', 'About me', 'Contact']
-  const { window } = props
-  const [mobileOpen, setMobileOpen] = React.useState(false)
-
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState)
-  }
-
-  const drawerItems = navItems.map((item, index) => (
-    <ListItem key={index} disablePadding>
-      <ListItemButton sx={{ textAlign: 'center' }}>
-        <ListItemText primary={item} />
-      </ListItemButton>
-    </ListItem>
-  ))
-
-  const container =
-    window !== undefined ? () => window().document.body : undefined
+  const [showDrawer, setShowDrawer] = useState(false)
+  const navItems = [
+    ,
+    { title: 'Home', path: '/' },
+    // { title: 'About', path: '/about' },
+    { title: 'Summer Camps', path: '/camps' },
+    // { title: 'Contact', path: '/contact' },
+  ]
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar component="nav" sx={{ backgroundColor: 'white' }}>
-        <Toolbar>
+    <Box
+      sx={{
+        height: '70px',
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: { xs: '0 10px', sm: '0 20px' },
+        boxShadow: '0px 0px 7px 0px rgba(0,0,0,0.75)',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+        }}
+      >
+        {isSmallScreen && (
           <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            onClick={() => setShowDrawer(true)}
+            sx={{ marginRight: '10px' }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            color="primary"
-            sx={{
-              flexGrow: 1,
-              display: { xs: 'none', sm: 'block' },
-              fontWeight: 'bold',
-              fontSize: '24px',
-            }}
-          >
-            {/* Fine Arts by Malena */}
-            {/* Malena Hirst Fine Arts */}
-            Malena Hirst
-            {/* Malena Hirst */}
-          </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Button
-                key={item}
-                sx={{
-                  color: 'primary',
-                  textTransform: 'none',
-                  fontSize: '18px',
-                }}
-              >
-                {item}
-              </Button>
-            ))}
-          </Box>
-          <Typography
-            className="header-mobile-title"
-            variant="h6"
-            component="div"
-            color="primary"
-            sx={{
-              flexGrow: 1,
-              display: { xs: 'none', sm: 'block' },
-              fontWeight: 'bold',
-            }}
-          >
-            Malena Hirst
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Box component="nav">
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
+        )}
+        <Typography
+          color="primary"
+          variant="h4"
           sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
+            fontWeight: 'bold',
+            textAlign: 'center',
+            fontSize: { xs: '24px', sm: '32px' },
           }}
         >
-          <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ my: 2 }}>
-              Malena Hirst
-            </Typography>
-            <Divider />
-            <List>{drawerItems}</List>
-          </Box>
-        </Drawer>
+          Malena Hirst
+        </Typography>
       </Box>
-      {/* <Box component="main" sx={{ p: 3 }}>
-        <Toolbar />
-      </Box> */}
+
+      {!isSmallScreen && (
+        <Box
+          sx={{
+            marginRight: '40px',
+            display: 'flex',
+            gap: '25px',
+            alignItems: 'center',
+          }}
+        >
+          {navItems.map((item, index) => (
+            <Button
+              key={index}
+              onClick={() => navigate(item.path)}
+              sx={{
+                textTransform: 'none',
+                fontSize: { xs: '16px', sm: '18px' },
+                fontWeight: 'bold',
+              }}
+            >
+              {item.title}
+            </Button>
+          ))}
+        </Box>
+      )}
+
+      <Drawer
+        position="left"
+        open={showDrawer}
+        sx={{ width: '500px' }}
+        onClose={() => setShowDrawer(false)}
+      >
+        <Typography
+          color="primary"
+          variant="h4"
+          sx={{
+            fontWeight: 'bold',
+            textAlign: 'center',
+            fontSize: { xs: '24px', sm: '32px' },
+            margin: '20px 0',
+          }}
+        >
+          Malena Hirst
+        </Typography>
+        {navItems.map((item, index) => (
+          <MenuItem
+            key={index}
+            sx={{
+              fontSize: '19px',
+            }}
+            onClick={() => {
+              setShowDrawer(false)
+              navigate(item.path)
+            }}
+          >
+            {item.title}
+          </MenuItem>
+        ))}
+      </Drawer>
     </Box>
   )
 }

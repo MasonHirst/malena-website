@@ -1,14 +1,14 @@
 import React from 'react'
 import muiStyles from '../styles/muiStyles'
-const { Typography, } = muiStyles
+const { Typography, Box, Link, } = muiStyles
 
 const Footer = () => {
   return (
-    <div className='footer-container'>
-      <div>
+    <Box className='footer-container'>
+      <Box>
         <Typography>Call me</Typography>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 

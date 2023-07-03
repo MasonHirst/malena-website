@@ -8,21 +8,23 @@ const { Typography, Button, Box } = muiStyles
 const HomeHeroSection = () => {
   const navigate = useNavigate()
   const isSmallScreen = useMediaQuery('(max-width: 600px)')
+  const is900Screen = useMediaQuery('(max-width: 900px)')
 
   return (
     <Box
       sx={{
         display: 'flex',
-        flexDirection: isSmallScreen ? 'column' : 'row-reverse',
+        flexDirection: is900Screen ? 'column' : 'row-reverse',
         gap: { xs: '15px', sm: '30px' },
         alignItems: 'center',
         justifyContent: 'space-evenly',
         marginBottom: '120px',
         marginTop: '20px',
+        padding: '0 10px',
       }}
     >
       <img
-        style={{ maxWidth: isSmallScreen ? 'min(100vw, 300px)' : '600px' }}
+        style={{ maxWidth: isSmallScreen ? 'min(100vw, 300px)' : '590px' }}
         alt="kids painting"
         src="https://plus.unsplash.com/premium_photo-1686920244656-49a53311437b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YXJ0JTIwY2FtcHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
       />

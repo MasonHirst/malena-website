@@ -7,8 +7,6 @@ const SummerCamp = require('../models/summerCamp')
 const SibApiV3Sdk = require('sib-api-v3-sdk')
 const { SEND_IN_BLUE_API_KEY } = process.env
 
-// SEND_IN_BLUE_API_KEY=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
-
 module.exports = {
   handleCampSignup: async (req, res) => {
     try {

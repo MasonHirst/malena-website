@@ -10,8 +10,8 @@ const SummerCamp = require('./models/summerCamp')
 const Signup = require('./models/signup')
 
 //! Middleware
-// const join = path.join(__dirname, '.', 'build')
-// app.use(express.static(join))
+const join = path.join(__dirname, '.', 'build')
+app.use(express.static(join))
 app.use(express.json())
 app.use(cors())
 
@@ -27,9 +27,9 @@ app.post('/api/summer-camp-signup', handleCampSignup)
 app.get('/api/camps', getActiveCamps)
 app.get('/api/camps/:camp_name', getCamp)
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.resolve(__dirname, '.', 'build', 'index.html'))
-// })
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '.', 'build', 'index.html'))
+})
 
 //! Server listen
 const { SERVER_PORT } = process.env

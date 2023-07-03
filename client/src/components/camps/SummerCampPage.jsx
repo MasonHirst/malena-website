@@ -21,11 +21,11 @@ const {
   AddIcon,
   IconButton,
   DeleteOutlineIcon,
-  Divider,
   Card,
   InfoOutlinedIcon,
   LightTooltip,
   CircularProgress,
+  ChevronLeftIcon,
 } = muiStyles
 
 const SummerCampPage = () => {
@@ -169,6 +169,18 @@ const SummerCampPage = () => {
         padding: '0 10px',
       }}
     >
+      <Box sx={{
+        width: '100%',
+        marginTop: '-80px',
+      }}>
+        <IconButton
+          onClick={() => navigate('/camps')}
+        >
+          <ChevronLeftIcon
+            sx={{ fontSize: '40px' }}
+            />
+        </IconButton>
+      </Box>
       <Typography
         variant="h5"
         color="primary"

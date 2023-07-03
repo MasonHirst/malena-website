@@ -5,7 +5,6 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import Footer from './components/Footer'
 import SummerCamps from './components/camps/SummerCamps'
 import SummerCampPage from './components/camps/SummerCampPage'
-import './reset.css'
 
 const { Box } = muiStyles
 
@@ -19,7 +18,7 @@ function App() {
           flexDirection: 'column',
           alignItems: 'center',
           marginTop: '64px',
-          paddingBottom: '300px',
+          paddingBottom: '500px',
           // padding: '0px 10px',
         }}
       >
