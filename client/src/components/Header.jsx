@@ -73,7 +73,7 @@ function Header() {
               onClick={() => navigate(item.path)}
               sx={{
                 textTransform: 'none',
-                fontSize: { xs: '16px', sm: '18px' },
+                fontSize: '20px',
                 fontWeight: 'bold',
               }}
             >

@@ -24,7 +24,7 @@ const HomeHeroSection = () => {
       }}
     >
       <img
-        style={{ maxWidth: isSmallScreen ? 'min(100vw, 300px)' : '590px' }}
+        style={{ maxWidth: isSmallScreen ? 'min(100%, 300px)' : '590px' }}
         alt="kids painting"
         src="https://plus.unsplash.com/premium_photo-1686920244656-49a53311437b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YXJ0JTIwY2FtcHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
       />
@@ -32,7 +32,11 @@ const HomeHeroSection = () => {
         <Typography
           variant="h3"
           color="primary"
-          sx={{ fontWeight: 'bold', fontSize: { xs: '24px', sm: '35px' } }}
+          sx={{
+            fontWeight: 'bold',
+            fontSize: { xs: '24px', sm: '35px' },
+            textAlign: 'center',
+          }}
         >
           Summer Camps 2023
         </Typography>
@@ -50,7 +54,7 @@ const HomeHeroSection = () => {
             color: 'white',
             fontSize: '18px',
             fontWeight: 'bold',
-            width: '250px',
+            width: isSmallScreen ? '200px' : '250px',
             marginTop: '10px',
           }}
         >

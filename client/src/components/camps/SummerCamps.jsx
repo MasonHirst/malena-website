@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import muiStyles from '../../styles/muiStyles'
 import { useNavigate } from 'react-router-dom'
+import CampPreviewCard from './CampPreviewCard'
 
 const { Typography, Button, Box, Card, Skeleton } = muiStyles
 
@@ -33,7 +34,7 @@ const SummerCamps = () => {
         // Calculate the elapsed time
         const elapsedTime = Date.now() - startTime
         // Calculate the remaining time to wait (minimum 500ms)
-        const remainingTime = Math.max(900 - elapsedTime, 0)
+        const remainingTime = Math.max(800 - elapsedTime, 0)
         // Set the loading state to false after the remaining time
         loadingTimer = setTimeout(() => {
           setSummerCamps(returnInfo)
@@ -47,9 +48,17 @@ const SummerCamps = () => {
     }
   }, [])
 
+  function sortByStartDate(camps) {
+    return camps.sort((a, b) => {
+      const aDate = new Date(a.startDate)
+      const bDate = new Date(b.startDate)
+      return aDate - bDate
+    })
+  }
+
   const mappedCampCards =
     summerCamps.length > 0 &&
-    summerCamps.map((camp, index) => {
+    sortByStartDate(summerCamps).map((camp, index) => {
       let ageRange
       if (camp.ageRange[1] === 100) {
         ageRange = camp.ageRange[0] + '+'
@@ -60,100 +69,11 @@ const SummerCamps = () => {
       document.title = 'Malena Hirst - Summer Camps'
 
       return (
-        <Card key={index} elevation={2} sx={{ maxWidth: 320 }}>
-          <img
-            className="cursor-pointer"
-            src={camp.picUrl}
-            style={{ width: '100%', maxWidth: '100%' }}
-            alt={camp.title + 'image'}
-            onClick={() => navigate(`${camp.href}`)}
+        <CampPreviewCard
+          key={index}
+          camp={camp}
+          ageRange={ageRange}
           />
-          <Box
-            sx={{
-              padding: '13px',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <Typography
-              variant="h5"
-              color="primary"
-              sx={{
-                fontWeight: 'bold',
-                textAlign: 'center',
-                fontSize: { xs: '24px', sm: '30px' },
-              }}
-            >
-              {camp.title}
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{ opacity: 0.8, textAlign: 'center', fontWeight: 'bold' }}
-            >
-              {camp.dates}
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                marginTop: '5px',
-              }}
-            >
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  opacity: 0.7,
-                  textAlign: 'center',
-                  fontSize: { xs: '16px', sm: '18px' },
-                }}
-              >
-                {'Time: ' + camp.times}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  opacity: 0.7,
-                  textAlign: 'center',
-                  fontSize: { xs: '16px', sm: '18px' },
-                }}
-              >
-                {'Cost: $' + camp.perCost}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  opacity: 0.7,
-                  textAlign: 'center',
-                  fontSize: { xs: '16px', sm: '18px' },
-                }}
-              >
-                {'Ages: ' + ageRange}
-              </Typography>
-            </Box>
-            <Typography
-              variant="subtitle"
-              sx={{ fontSize: { xs: '16px', sm: '18px' } }}
-            >
-              {camp.shortDescription}
-            </Typography>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={() => navigate(`/camps/${camp.href}`)}
-              sx={{
-                textTransform: 'none',
-                color: 'white',
-                fontSize: '18px',
-                fontWeight: 'bold',
-                width: '100%',
-                marginTop: '10px',
-              }}
-            >
-              Sign up
-            </Button>
-          </Box>
-        </Card>
       )
     })
 
@@ -192,7 +112,14 @@ const SummerCamps = () => {
         }}
       >
         {campsLoading ? (
-          <Box sx={{ display: 'flex', gap: '15px' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '15px',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}
+          >
             <Skeleton
               variant="rectangular"
               animation="wave"

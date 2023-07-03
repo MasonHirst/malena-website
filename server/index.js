@@ -32,14 +32,14 @@ app.get('*', (req, res) => {
 })
 
 //! Server listen
-const { SERVER_PORT } = process.env
+const PORT = process.env.SERVER_PORT || 8080
 db
 .sync()
   // .sync({force: true})
   // .then(() => seed())
   .then(() => {
-    app.listen(SERVER_PORT || 8080, () =>
-      console.log(`SERVER RUNNING ON SERVER_PORT ${SERVER_PORT || 8080}`)
+    app.listen(PORT, () =>
+      console.log(`SERVER RUNNING ON PORT ${PORT}`)
     )
   })
   .catch((err) => console.log(err))

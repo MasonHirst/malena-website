@@ -6,7 +6,8 @@ const allCamps = [
     otherInfo: `For performance and learning purposes, we may split into smaller age groups throughout the camp.`,
     picUrl:
       'https://images.squarespace-cdn.com/content/v1/6115c116ac61bd0e4fcfb626/1629696826600-2V9UKSI1ECDYCMJ9Y5YH/Kids+Having+Fun+After+School+Activity+Theater+Improv++Mockingbird+Improv+Children.JPG',
-    dates: 'July 10 - July 12',
+    startDate: 'July 10',
+    endDate: 'July 12',
     times: '9am - 12:30pm',
     ageRange: [8, 18],
     location: `Pleasant Grove, UT`,
@@ -22,7 +23,8 @@ const allCamps = [
     otherInfo: ``,
     picUrl:
       'https://images.unsplash.com/photo-1609618992870-f519a360482e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTF8fHBlbmNpbCUyMGRyYXdpbmd8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60',
-    dates: 'July 26 - July 28',
+    startDate: 'July 26',
+    endDate: 'July 28',
     times: '9am - 1pm',
     ageRange: [10, 18],
     perCost: 125,
@@ -38,7 +40,8 @@ const allCamps = [
     otherInfo: `For any of you who worry about art skill, I've asked my husband, who doesn't usually paint, to come join us. :)`,
     picUrl:
       'https://paintings.pinotspalette.com/birds-date-night-hdtv.jpg?v=10037860',
-    dates: 'July 21',
+    startDate: 'July 21',
+    endDate: 'July 21',
     times: '7pm - 9pm',
     ageRange: [16, 100],
     perCost: 15,
