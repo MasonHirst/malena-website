@@ -7,6 +7,13 @@ const { Typography, Button, Box, Card, Skeleton } = muiStyles
 const CampPreviewCard = ({ camp }) => {
   const navigate = useNavigate()
 
+  let dateRange
+  if (camp.startDate === camp.endDate) {
+    dateRange = camp.startDate
+  } else {
+    dateRange = camp.startDate + ' - ' + camp.endDate
+  }
+
   let ageRange
   if (camp.ageRange[1] === 100) {
     ageRange = camp.ageRange[0] + '+'
@@ -45,7 +52,7 @@ const CampPreviewCard = ({ camp }) => {
           variant="h6"
           sx={{ opacity: 0.8, textAlign: 'center', fontWeight: 'bold' }}
         >
-          {camp.dates}
+          {dateRange}
         </Typography>
         <Box
           sx={{
