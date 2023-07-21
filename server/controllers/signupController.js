@@ -83,7 +83,7 @@ module.exports = {
 
 function sendConfirmEmailToClient(formInfo, camp, instructor) {
   const instructorName = instructor.name || 'Malena Hirst'
-  const instructorEmail = instructor.email || 'malena.connole@gmail.com'
+  const instructorEmail = instructor.email || 'malena.hirst@gmail.com'
   const instructorPhone = instructor.phone || '(385) 321-0150'
   const { signerEmail, signerName, signerPhone, participants, comments } =
     formInfo
@@ -140,7 +140,7 @@ function sendConfirmEmailToClient(formInfo, camp, instructor) {
 
 function sendConfirmEmailToInstructor(formInfo, camp, instructor) {
   const instructorName = instructor.name || 'Malena Hirst'
-  const instructorEmail = instructor.email || 'malena.connole@gmail.com'
+  const instructorEmail = instructor.email || 'malena.hirst@gmail.com'
   const instructorPhone = instructor.phone || '(385) 321-0150'
   const { signerEmail, signerName, signerPhone, participants, comments } =
     formInfo
