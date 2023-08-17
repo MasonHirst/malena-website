@@ -39,7 +39,6 @@ export function Authentication({ children }) {
     axios
       .get('/api/staff/me', { token: jwt })
       .then(({ data }) => {
-        console.log(data)
         if (data.user) {
           setUser(data.user)
         }

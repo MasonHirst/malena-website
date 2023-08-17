@@ -258,7 +258,7 @@ const ClassPage = () => {
       </Typography>
       <img
         src={classObj.pic_url}
-        alt={classObj.title + 'image'}
+        alt={classObj.title}
         style={{
           width: 'min(100%, 600px)',
         }}

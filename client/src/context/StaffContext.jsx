@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 import axios from 'axios'
 
 export const StaffContext = createContext()
@@ -8,12 +8,11 @@ export function StaffContextFunction({ children }) {
   const [staffList, setStaffList] = useState([])
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
+  function getAllClasses() {
     setLoading(true)
     axios
-      .get('/api/classes/all')
+      .get('/api/staff/classes/all')
       .then(({ data }) => {
-        console.log('classes: ', data)
         if (data.length) {
           setClassList(data)
         }
@@ -22,6 +21,10 @@ export function StaffContextFunction({ children }) {
       .finally(() => {
         setLoading(false)
       })
+  }
+  
+  useEffect(() => {
+    getAllClasses()
   }, [])
 
   return (
@@ -33,6 +36,7 @@ export function StaffContextFunction({ children }) {
         setClassList,
         staffList,
         setStaffList,
+        getAllClasses,
       }}
     >
       {children}

@@ -1,26 +1,51 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Box, Button, Dialog } from '@mui/material'
+import { Box, Button, Card, Dialog, Typography } from '@mui/material'
 import axios from 'axios'
 import NewClassForm from './NewClassForm'
 import { StaffContext } from '../../context/StaffContext'
+import ClassListCard from './ClassListCard'
+import dayjs from 'dayjs'
 
 const Classes = () => {
-  const { loading, setLoading, classList } = useContext(StaffContext)
+  const { loading, setLoading, classList, getAllClasses } =
+    useContext(StaffContext)
   const [showNewClassForm, setShowNewClassForm] = useState(false)
+  const [classToEdit, setClassToEdit] = useState(null)
+  const [showEditClassForm, setShowEditClassForm] = useState(false)
+
+  function handleSubmitEditClass(editedClass) {
+    setLoading(true)
+    axios
+      .put('/api/staff/classes/update', { editedClass })
+      .then(({ data }) => {
+        console.log('data: ', data)
+        clearSessionStorageValues()
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false))
+  }
 
   function handleSubmitNewClass(newClass) {
     setLoading(true)
     axios
-    .post('/api/classes/create', { newClass })
-    .then(({ data }) => {
-      console.log('data: ', data)
-      clearSessionStorageValues()
-    })
-    .catch(console.error)
-    .finally(() => setLoading(false))
+      .post('/api/staff/classes/create', { newClass })
+      .then(({ data }) => {
+        if (data.id) {
+          clearSessionStorageValues()
+          setShowNewClassForm(false)
+          getAllClasses()
+        } else console.error('error creating new class')
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false))
   }
 
 
+  function handleEditClass(classObj) {
+    setClassToEdit(classObj)
+    setShowEditClassForm(true)
+  }
+  
   function clearSessionStorageValues() {
     sessionStorage.removeItem('classTitle')
     sessionStorage.removeItem('imgUrl')
@@ -42,29 +67,51 @@ const Classes = () => {
 
   return (
     <Box>
-      {!showNewClassForm && (
-        <Button
-          variant='contained'
-          color='secondary'
-          sx={{
-            color: 'white',
-            textTransform: 'none',
-            fontWeight: 'bold',
-            fontSize: '18px',
-          }}
-          onClick={() => setShowNewClassForm(!showNewClassForm)}
-        >
-          Create new class
-        </Button>
-      )}
+      <Button
+        variant='contained'
+        color='secondary'
+        sx={{
+          color: 'white',
+          textTransform: 'none',
+          fontWeight: 'bold',
+          fontSize: '18px',
+        }}
+        onClick={() => setShowNewClassForm(!showNewClassForm)}
+      >
+        Create new class
+      </Button>
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+          padding: '10px',
+        }}
+      >
+        {classList.map((c, i) => {
+          return (
+            <ClassListCard key={i} classObj={c} handleEditSelect={handleEditClass} />
+          )
+        })}
+      </Box>
 
       {showNewClassForm && (
-        
-          <NewClassForm
-            showForm={showNewClassForm}
-            setShowForm={setShowNewClassForm}
-            handleFormSubmit={handleSubmitNewClass}
-          />
+        <NewClassForm
+          showForm={showNewClassForm}
+          setShowForm={setShowNewClassForm}
+          handleFormSubmit={handleSubmitNewClass}
+        />
+      )}
+
+      {showEditClassForm && (
+        <NewClassForm
+          saveFormSession={false}
+          showForm={showEditClassForm}
+          setShowForm={setShowEditClassForm}
+          handleFormSubmit={handleSubmitEditClass}
+          classData={classToEdit}
+        />
       )}
     </Box>
   )

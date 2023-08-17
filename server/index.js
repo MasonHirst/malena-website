@@ -34,8 +34,8 @@ app.post('/api/staff/signup', createStaffAccount)
 
 // Protected endpoints
 app.get('/api/staff/me', validateToken, findStaffAccount)
-app.get('/api/classes/all', validateToken, getAllClasses)
-app.post('/api/classes/create', validateToken, createNewClass)
+app.get('/api/staff/classes/all', validateToken, getAllClasses)
+app.post('/api/staff/classes/create', validateToken, createNewClass)
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '.', 'build', 'index.html'))

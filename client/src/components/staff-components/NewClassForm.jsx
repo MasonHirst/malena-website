@@ -33,8 +33,10 @@ const defaultClassData = {
   full_desc: '',
   other_info: '',
   pic_url: '',
-  start_date: dayjs(),
-  end_date: dayjs(),
+  // start_date: dayjs(),
+  // end_date: dayjs(),
+  start_date: null,
+  end_date: null,
   start_time: null,
   end_time: null,
   min_age: 0,
@@ -48,30 +50,54 @@ const defaultClassData = {
 }
 
 const NewClassForm = ({
+  saveFormSession = true,
   showForm,
   setShowForm,
   handleFormSubmit,
   classData = defaultClassData,
 }) => {
+  const {
+    title,
+    short_desc,
+    full_desc,
+    other_info,
+    pic_url,
+    start_date,
+    end_date,
+    start_time,
+    end_time,
+    min_age,
+    max_age,
+    per_cost,
+    location,
+    href,
+    need_guardian_signup,
+    active: isActive,
+    class_type,
+  } = classData
   const { loading, setLoading } = useContext(StaffContext)
   const [formError, setFormError] = useState('')
-  const [classTitle, setClassTitle] = useState(classData.title)
-  const [imgUrl, setImgUrl] = useState(classData.pic_url)
-  const [classType, setClassType] = useState(classData.class_type)
-  const [shortDesc, setShortDesc] = useState(classData.short_desc)
-  const [fullDesc, setFullDesc] = useState(classData.full_desc)
-  const [otherInfo, setOtherInfo] = useState(classData.other_info)
-  const [locationStr, setLocationStr] = useState(classData.location)
-  const [guardianSignup, setGuardianSignup] = useState(classData.need_guardian_signup)
-  const [isMultiDay, setIsMultiDay] = useState(classData.start_date !== classData.end_date)
-  const [startDate, setStartDate] = useState(classData.start_date)
-  const [endDate, setEndDate] = useState(classData.end_date)
-  const [startTime, setStartTime] = useState(classData.start_time)
-  const [endTime, setEndTime] = useState(classData.end_time)
-  const [pricePer, setPricePer] = useState(classData.per_cost)
-  const [active, setActive] = useState(classData.active)
-  const [minAge, setMinAge] = useState(classData.min_age)
-  const [maxAge, setMaxAge] = useState(classData.max_age)
+  const [classTitle, setClassTitle] = useState(title)
+  const [imgUrl, setImgUrl] = useState(pic_url)
+  const [classType, setClassType] = useState(class_type)
+  const [shortDesc, setShortDesc] = useState(short_desc)
+  const [fullDesc, setFullDesc] = useState(full_desc)
+  const [otherInfo, setOtherInfo] = useState(other_info)
+  const [locationStr, setLocationStr] = useState(location)
+  const [guardianSignup, setGuardianSignup] = useState(
+    need_guardian_signup
+  )
+  const [isMultiDay, setIsMultiDay] = useState(
+    start_date !== end_date
+  )
+  const [startDate, setStartDate] = useState(start_date ? dayjs(start_date) : dayjs())
+  const [endDate, setEndDate] = useState(end_date ? dayjs(end_date) : dayjs())
+  const [startTime, setStartTime] = useState(start_time)
+  const [endTime, setEndTime] = useState(end_time)
+  const [pricePer, setPricePer] = useState(per_cost)
+  const [active, setActive] = useState(isActive)
+  const [minAge, setMinAge] = useState(min_age)
+  const [maxAge, setMaxAge] = useState(max_age)
 
   const ageChoices = [
     { label: 'no minimum age', value: 0 },
@@ -162,6 +188,7 @@ const NewClassForm = ({
 
   useEffect(() => {
     setFormError('')
+    if (!saveFormSession) return
     // place each value into session storage as it is changed
     sessionStorage.setItem('classTitle', classTitle)
     sessionStorage.setItem('imgUrl', imgUrl)
@@ -249,8 +276,6 @@ const NewClassForm = ({
       return false
     }
 
-
-
     // check if the endDate is before the startDate
     if (endDate.isBefore(startDate)) {
       setFormError('End date must be after start date')
@@ -262,9 +287,7 @@ const NewClassForm = ({
       setFormError('End time must be after start time')
       return false
     }
-    
-    
-    
+
     return true
   }
 
@@ -283,17 +306,6 @@ const NewClassForm = ({
         },
       }}
     >
-      {/* <Card
-        elevation={3}
-        sx={{
-          padding: '20px',
-          margin: '10px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '20px',
-          alignItems: 'flex-start',
-        }}
-      > */}
       <Typography variant='h6'>Add new class</Typography>
       <form
         style={{
@@ -307,6 +319,7 @@ const NewClassForm = ({
           disabled={loading}
           fullWidth
           label='Class title'
+          required
           size='small'
           variant='outlined'
           value={classTitle}
@@ -324,13 +337,17 @@ const NewClassForm = ({
             disabled={loading}
             fullWidth
             label='Image url'
+            required
             size='small'
             variant='outlined'
             value={imgUrl}
             onChange={(e) => setImgUrl(e.target.value)}
             error={imgUrl.length >= 999}
-            helperText={imgUrl.length >= 999 ? `Too many characters ${imgUrl.length}/999` : 'Right click on a public image (not copyrighted) and select "copy image address", then paste that url here.'}
-            
+            helperText={
+              imgUrl.length >= 999
+                ? `Too many characters ${imgUrl.length}/999`
+                : 'Right click on a public image (not copyrighted) and select "copy image address", then paste that url here.'
+            }
           />
           <IconButton onClick={() => setImgUrl('')}>
             <DeleteOutlineIcon color='error' />
@@ -352,6 +369,7 @@ const NewClassForm = ({
           disabled={loading}
           fullWidth
           label='Class short description'
+          required
           size='small'
           variant='outlined'
           value={shortDesc}
@@ -365,6 +383,7 @@ const NewClassForm = ({
           disabled={loading}
           fullWidth
           label='Class full description'
+          required
           size='small'
           variant='outlined'
           value={fullDesc}
@@ -390,6 +409,7 @@ const NewClassForm = ({
           disabled={loading}
           fullWidth
           label='Location'
+          required
           size='small'
           variant='outlined'
           value={locationStr}
@@ -501,6 +521,7 @@ const NewClassForm = ({
         <FormControl>
           <InputLabel>Cost per participant</InputLabel>
           <OutlinedInput
+            required
             type='number'
             size='small'
             label='Cost per participant'
@@ -569,7 +590,6 @@ const NewClassForm = ({
           Submit
         </Button>
       </section>
-      {/* </Card> */}
     </Dialog>
   )
 }

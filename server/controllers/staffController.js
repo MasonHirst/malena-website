@@ -4,7 +4,9 @@ const Class = require('../models/class');
 module.exports = {
   getAllClasses: async (req, res) => {
     try {
+      console.log('get all classes')
       const classes = await Class.findAll()
+      console.log(['classes'])
       res.status(200).send(classes)
     } catch (err) {
       console.error(err)

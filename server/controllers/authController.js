@@ -47,8 +47,6 @@ module.exports = {
   loginStaff: async (req, res) => {
     try {
       const { email, password } = req.body
-      console.log(email, password)
-
       let user = await StaffAccount.findOne({ where: { email } })
       if (!user) return res.status(200).send('No user found with that email')
 
