@@ -19,7 +19,7 @@ const HomeHeroSection = () => {
         alignItems: 'center',
         justifyContent: 'space-evenly',
         marginBottom: '120px',
-        marginTop: '20px',
+        marginTop: '60px',
         padding: '0 10px',
       }}
     >
@@ -38,17 +38,17 @@ const HomeHeroSection = () => {
             textAlign: 'center',
           }}
         >
-          Summer Camps 2023
+          Classes 2023
         </Typography>
         <Typography
           variant="subtitle"
           sx={{ fontSize: '20px', textAlign: 'center' }}
         >
-          Sign up now for a variety of fun summer camps for kids of all ages!
+          Sign up now for a variety of fun summer classes for kids of all ages!
         </Typography>
         <Button
           variant="contained"
-          onClick={() => navigate('/camps')}
+          onClick={() => navigate('/classes')}
           sx={{
             textTransform: 'none',
             color: 'white',
@@ -58,7 +58,7 @@ const HomeHeroSection = () => {
             marginTop: '10px',
           }}
         >
-          View camps
+          View classes
         </Button>
       </Box>
     </Box>

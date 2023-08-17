@@ -7,20 +7,22 @@ const { Typography, Button, Box, Drawer, MenuItem, MenuIcon, IconButton } =
   muiStyles
 
 function Header() {
-  const isSmallScreen = useMediaQuery('(max-width: 600px)')
+  const isSmallScreen = useMediaQuery('(max-width: 700px)')
   const navigate = useNavigate()
   const [showDrawer, setShowDrawer] = useState(false)
   const navItems = [
-    ,
     { title: 'Home', path: '/' },
     // { title: 'About', path: '/about' },
-    { title: 'Summer Camps', path: '/camps' },
+    { title: 'Classes', path: '/classes' },
+    { title: 'Admin', path: '/staff' },
     // { title: 'Contact', path: '/contact' },
   ]
 
   return (
     <Box
       sx={{
+        // position: 'sticky',
+        top: 0,
         height: '70px',
         width: '100%',
         display: 'flex',

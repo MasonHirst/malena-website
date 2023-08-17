@@ -3,7 +3,6 @@ import { BrowserRouter } from 'react-router-dom'
 import ReactDOM from 'react-dom/client'
 import axios from 'axios'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-
 import './index.css'
 import App from './App'
 
@@ -23,6 +22,12 @@ const serverUrl =
     ? 'http://localhost:8080'
     : document.location.origin
 axios.defaults.baseURL = serverUrl
+
+axios.interceptors.request.use(function (config) {
+  config.headers.Authorization = localStorage.getItem('malenaSiteJwtToken')
+  // Do something before request is sent
+  return config
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(

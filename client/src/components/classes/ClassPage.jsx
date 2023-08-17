@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useState, useEffect, useContext } from 'react'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { useMediaQuery } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import muiStyles from '../../styles/muiStyles'
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import { validate } from 'email-validator'
-import CampConfirmDialog from './CampConfirmDialog'
+import ClassConfirmDialog from './ClassConfirmDialog'
 import axios from 'axios'
+import { AuthContext } from '../../context/AuthContext'
 
 const {
   Box,
@@ -28,8 +29,12 @@ const {
   ChevronLeftIcon,
 } = muiStyles
 
-const SummerCampPage = () => {
+const ClassPage = () => {
+  const { authState } = useContext(AuthContext)
   const navigate = useNavigate()
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
+  const class_id_param = searchParams.get('id')
   const is350Screen = useMediaQuery('(max-width: 350px)')
   const isSmallScreen = useMediaQuery('(max-width: 600px)')
   const is700Screen = useMediaQuery('(max-width: 700px)')
@@ -40,57 +45,61 @@ const SummerCampPage = () => {
   const [formError, setFormError] = useState('')
   const [showConfirmInfoDialog, setShowConfirmInfoDialog] = useState(false)
   const [participants, setParticipants] = useState([{ name: '', age: '' }])
-  const { campName } = useParams()
-  const [camp, setCamp] = useState({})
+  const [classObj, setClassObj] = useState({})
 
   useEffect(() => {
     axios
-      .get(`/api/camps/${campName}`)
+      .get(`/api/classes/${class_id_param}`)
       .then(({ data }) => {
         if (data.id) {
-          setCamp(data)
+          setClassObj(data)
         } else {
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'Camp not found!',
+            text: 'Class not found!',
             confirmButtonText: 'Go back',
             confirmButtonColor: '#f50057',
           }).then((result) => {
             if (result.isConfirmed) {
-              navigate('/camps')
+              navigate('/classes')
             }
           })
         }
       })
       .catch(console.error)
-  }, [campName])
+  }, [location])
 
   const instructor = {
     name: 'Malena Hirst',
   }
 
-  document.title = `Malena Hirst - ${camp.title}`
+  document.title = `Malena Hirst - ${classObj.title}`
 
   let dateRange
-  if (camp.startDate === camp.endDate) {
-    dateRange = camp.startDate
+  if (classObj.startDate === classObj.endDate) {
+    dateRange = classObj.startDate
   } else {
-    dateRange = camp.startDate + ' - ' + camp.endDate
+    dateRange = classObj.startDate + ' - ' + classObj.endDate
   }
-  
+
   let ageRange
-  if (camp.ageRange) {
-    if (camp.ageRange[1] === 100) {
-      ageRange = camp.ageRange[0] + '+'
-    } else {
-      ageRange = camp.ageRange.join(' - ')
-    }
+  const { min_age, max_age } = classObj
+  if (min_age === max_age) {
+    ageRange = min_age
+  } else if (min_age === 0 && max_age < 100) {
+    ageRange = max_age + ' and under'
+  } else if (min_age > 0 && max_age === 100) {
+    ageRange = min_age + ' and up'
+  } else if (min_age > 0 && max_age < 100) {
+    ageRange = min_age + ' - ' + max_age
+  } else if (min_age === 0 && max_age === 100) {
+    ageRange = 'All ages'
   }
 
   const ageOptions = []
-  if (camp.title) {
-    for (let i = camp.ageRange[0]; i <= camp.ageRange[1]; i++) {
+  if (classObj.title) {
+    for (let i = classObj.min_age; i <= classObj.max_age; i++) {
       ageOptions.push(+i)
     }
   }
@@ -124,20 +133,19 @@ const SummerCampPage = () => {
       return setFormError('Please add at least one participant')
     }
 
-    // if needGuardianSignup is true, make sure all participants have a name and age. otherwise, just make sure every participant has a name
+    // if need_guardian_signup is true, make sure all participants have a name and age. otherwise, just make sure every participant has a name
     if (
-      camp.needGuardianSignup &&
+      classObj.need_guardian_signup &&
       participants.filter((val) => val.name && val.age).length !==
         participants.length
     ) {
       return setFormError('All participant fields must be filled.')
     } else if (
-      !camp.needGuardianSignup &&
+      !classObj.need_guardian_signup &&
       participants.filter((val) => val.name).length !== participants.length
     ) {
       return setFormError('All participant fields must be filled.')
     }
-
 
     setShowConfirmInfoDialog(true)
   }
@@ -149,10 +157,10 @@ const SummerCampPage = () => {
       signerPhone,
       participants,
       comments: commentsInput,
-      camp,
+      classObj,
     }
     axios
-      .post('/api/summer-camp-signup', formInfo)
+      .post('/api/class-signup', formInfo)
       .then(({ data }) => {
         if (!data) return alert('Something went wrong. Please try again.')
         Swal.fire({
@@ -163,14 +171,24 @@ const SummerCampPage = () => {
           confirmButtonColor: '#f50057',
         }).then((result) => {
           if (result.isConfirmed) {
-            navigate('/camps')
+            navigate('/classes')
           }
         })
       })
       .catch(console.error)
   }
 
-  if (!camp.title)
+  function formatClassTimes(dateString) {
+    const date = new Date(dateString)
+    const hours = date.getHours()
+    const minutes = date.getMinutes()
+    const ampm = hours >= 12 ? 'pm' : 'am'
+    const formattedHours = hours % 12 === 0 ? 12 : hours % 12
+    const formattedMinutes = minutes.toString().padStart(2, '0')
+    return `${formattedHours}:${formattedMinutes}${ampm}`
+  }
+
+  if (!classObj.title)
     return (
       <Box
         sx={{
@@ -185,38 +203,49 @@ const SummerCampPage = () => {
     )
   return (
     <Box
-      className="flex-col"
+      className='flex-col'
       sx={{
         gap: '15px',
         alignItems: 'center',
-        padding: '0 10px',
+        padding: '0 12px',
+        marginBottom: '100px',
       }}
     >
-      <Box sx={{
-        width: '100%',
-        marginTop: '-80px',
-      }}>
-        <IconButton
-          onClick={() => navigate('/camps')}
-        >
-          <ChevronLeftIcon
-            sx={{ fontSize: '40px' }}
-            />
+      <Box
+        sx={{
+          width: '100%',
+        }}
+      >
+        <IconButton onClick={() => navigate('../classes')}>
+          <ChevronLeftIcon sx={{ fontSize: '40px' }} />
         </IconButton>
       </Box>
+
+
+      {authState === 'AUTHENTICATED' && <Button
+        color='secondary'
+        onClick={() => navigate(`/staff/classes/edit/${classObj.id}`)}
+        sx={{
+          textTransform: 'none',
+          fontSize: { xs: '16px', sm: '18px' },
+          fontWeight: 'bold',
+          textDecoration: 'underline',
+        }}
+      >Edit this class</Button>}
+
       <Typography
-        variant="h5"
-        color="primary"
+        variant='h5'
+        color='primary'
         sx={{
           fontWeight: 'bold',
           textAlign: 'center',
           fontSize: { xs: '26px', sm: '36px' },
         }}
       >
-        {camp.title}
+        {classObj.title}
       </Typography>
       <Typography
-        variant="h6"
+        variant='h6'
         sx={{
           opacity: 0.7,
           textAlign: 'center',
@@ -228,15 +257,15 @@ const SummerCampPage = () => {
         Instructor: {instructor.name}
       </Typography>
       <img
-        src={camp.picUrl}
-        alt={camp.title + 'image'}
+        src={classObj.pic_url}
+        alt={classObj.title + 'image'}
         style={{
           width: 'min(100%, 600px)',
         }}
       />
 
       <Typography
-        variant="h6"
+        variant='h6'
         sx={{ opacity: 0.8, textAlign: 'center', fontWeight: 'bold' }}
       >
         {dateRange}
@@ -250,27 +279,30 @@ const SummerCampPage = () => {
         }}
       >
         <Typography
-          variant="subtitle1"
+          variant='subtitle1'
           sx={{
             opacity: 0.7,
             textAlign: 'center',
             fontSize: { xs: '16px', sm: '18px' },
           }}
         >
-          {'Time: ' + camp.times}
+          {'Time: ' +
+            formatClassTimes(classObj.start_time) +
+            ' - ' +
+            formatClassTimes(classObj.end_time)}
         </Typography>
         <Typography
-          variant="subtitle1"
+          variant='subtitle1'
           sx={{
             opacity: 0.7,
             textAlign: 'center',
             fontSize: { xs: '16px', sm: '18px' },
           }}
         >
-          {'Cost: $' + camp.perCost}
+          {'Cost: $' + classObj.per_cost}
         </Typography>
         <Typography
-          variant="subtitle1"
+          variant='subtitle1'
           sx={{
             opacity: 0.7,
             textAlign: 'center',
@@ -280,32 +312,37 @@ const SummerCampPage = () => {
           {'Ages: ' + ageRange}
         </Typography>
         <Typography
-          variant="subtitle1"
+          variant='subtitle1'
           sx={{
             opacity: 0.7,
             textAlign: 'center',
             fontSize: { xs: '16px', sm: '18px' },
           }}
         >
-          {'Location: ' + camp.location}
+          {'Location: ' + classObj.location}
         </Typography>
       </Box>
       <Typography
-        variant="subtitle"
-        sx={{ fontSize: { xs: '16px', sm: '18px' }, marginTop: '10px' }}
+        variant='subtitle'
+        sx={{
+          fontSize: { xs: '16px', sm: '18px' },
+          marginTop: '10px',
+          maxWidth: '700px',
+        }}
       >
-        {camp.fullDescription}
+        {classObj.full_desc}
       </Typography>
 
       <Typography
-        variant="subtitle"
+        variant='subtitle'
         sx={{
           fontSize: { xs: '16px', sm: '18px' },
-          display: camp.otherInfo ? 'block' : 'none',
+          display: classObj.other_info ? 'block' : 'none',
+          maxWidth: '700px',
         }}
       >
         <span>Other info: </span>
-        {camp.otherInfo}
+        {classObj.other_info}
       </Typography>
 
       <Card
@@ -322,15 +359,15 @@ const SummerCampPage = () => {
         }}
       >
         <Typography
-          variant="h6"
-          color="primary"
+          variant='h6'
+          color='primary'
           sx={{
             fontWeight: 'bold',
             textAlign: 'center',
             fontSize: { xs: '26px', sm: '36px' },
           }}
         >
-          Sign up for {camp.title}
+          Sign up for {classObj.title}
         </Typography>
 
         <Typography sx={{ marginTop: '-15px', textAlign: 'center' }}>
@@ -347,13 +384,13 @@ const SummerCampPage = () => {
           }}
         >
           <Typography
-            variant="h6"
+            variant='h6'
             sx={{
               fontSize: { xs: '18px', sm: '22px' },
               opacity: 0.7,
             }}
           >
-            {camp.needGuardianSignup
+            {classObj.need_guardian_signup
               ? 'Parent/guardian contact info'
               : 'Your contact info'}
           </Typography>
@@ -379,24 +416,24 @@ const SummerCampPage = () => {
           }}
         >
           <TextField
-            size="small"
-            label="Full name"
+            size='small'
+            label='Full name'
             sx={{ width: '100%', maxWidth: is700Screen ? '100%' : '300px' }}
             value={signerName}
             onChange={(e) => setSignerName(e.currentTarget.value)}
           />
           <TextField
-            size="small"
-            label="Email"
-            type="email"
+            size='small'
+            label='Email'
+            type='email'
             sx={{ width: '100%', maxWidth: is700Screen ? '100%' : '300px' }}
             value={signerEmail}
             onChange={(e) => setSignerEmail(e.currentTarget.value)}
           />
           <TextField
-            size="small"
-            label="Phone number"
-            type="number"
+            size='small'
+            label='Phone number'
+            type='number'
             sx={{ width: '100%', maxWidth: is700Screen ? '100%' : '300px' }}
             value={signerPhone}
             onChange={(e) => setSignerPhone(e.currentTarget.value)}
@@ -404,7 +441,7 @@ const SummerCampPage = () => {
         </Box>
 
         <Typography
-          variant="h6"
+          variant='h6'
           sx={{
             fontSize: { xs: '18px', sm: '22px' },
             opacity: 0.7,
@@ -415,7 +452,7 @@ const SummerCampPage = () => {
           Participant info
         </Typography>
 
-        <Box className="flex-col" sx={{ gap: is350Screen ? '30px' : '10px' }}>
+        <Box className='flex-col' sx={{ gap: is350Screen ? '30px' : '10px' }}>
           {participants.map((participant, index) => {
             return (
               <Box key={index}>
@@ -434,37 +471,37 @@ const SummerCampPage = () => {
                     }}
                   >
                     <TextField
-                      size="small"
-                      label="Name"
+                      size='small'
+                      label='Name'
                       value={participant.name}
                       onChange={(e) =>
                         handleNameChange(e.currentTarget.value, index)
                       }
                     />
-                    {camp.needGuardianSignup && (
+                    {classObj.need_guardian_signup && (
                       <FormControl>
-                        <InputLabel size="small">Age</InputLabel>
+                        <InputLabel size='small'>Age</InputLabel>
                         <Select
                           sx={{ width: is350Screen ? '100%' : '90px' }}
-                          size="small"
+                          size='small'
                           value={participant.age}
                           onChange={(e) =>
                             handleAgeChange(e.target.value, index)
                           }
-                          label="Age"
+                          label='Age'
                         >
                           {ageOptions.map((age, index) => (
                             <MenuItem key={index} value={age}>
                               {age}
                             </MenuItem>
                           ))}
-                          <MenuItem value="other">Other</MenuItem>
+                          <MenuItem value='other'>Other</MenuItem>
                         </Select>
                       </FormControl>
                     )}
                   </Box>
                   <IconButton onClick={() => handleRemoveParticipant(index)}>
-                    <DeleteOutlineIcon color="error" />
+                    <DeleteOutlineIcon color='error' />
                   </IconButton>
                 </Box>
               </Box>
@@ -473,8 +510,8 @@ const SummerCampPage = () => {
         </Box>
 
         <Button
-          variant="text"
-          color="secondary"
+          variant='text'
+          color='secondary'
           sx={{
             textTransform: 'none',
             fontSize: { xs: '16px', sm: '18px' },
@@ -489,8 +526,8 @@ const SummerCampPage = () => {
         </Button>
 
         <Typography
-          variant="subtitle"
-          color="error"
+          variant='subtitle'
+          color='error'
           sx={{
             fontSize: { xs: '16px', sm: '18px' },
             marginTop: '10px',
@@ -505,8 +542,8 @@ const SummerCampPage = () => {
         </Typography>
 
         <TextField
-          size="small"
-          label="Anything else we should know?"
+          size='small'
+          label='Anything else we should know?'
           multiline
           minRows={3}
           sx={{ width: 'min(100%, 550px)' }}
@@ -517,8 +554,8 @@ const SummerCampPage = () => {
         />
 
         <Typography
-          variant="subtitle"
-          color="error"
+          variant='subtitle'
+          color='error'
           sx={{
             fontSize: { xs: '16px', sm: '18px' },
             marginTop: '10px',
@@ -529,8 +566,8 @@ const SummerCampPage = () => {
         </Typography>
 
         <Button
-          variant="contained"
-          color="secondary"
+          variant='contained'
+          color='secondary'
           onClick={handleConfirmForm}
           sx={{
             textTransform: 'none',
@@ -545,7 +582,7 @@ const SummerCampPage = () => {
         </Button>
       </Card>
 
-      <CampConfirmDialog
+      <ClassConfirmDialog
         showDialog={showConfirmInfoDialog}
         setShowDialog={setShowConfirmInfoDialog}
         handleSubmitForm={handleSubmitForm}
@@ -555,11 +592,11 @@ const SummerCampPage = () => {
           signerPhone,
           participants,
           commentsInput,
-          camp,
+          classObj,
         }}
       />
     </Box>
   )
 }
 
-export default SummerCampPage
+export default ClassPage

@@ -3,12 +3,12 @@ const { Op } = require('sequelize')
 const { Sequelize } = require('sequelize')
 const cloudinary = require('cloudinary')
 const Signup = require('../models/signup')
-const SummerCamp = require('../models/summerCamp')
+const Class = require('../models/class')
 const SibApiV3Sdk = require('sib-api-v3-sdk')
 const { SEND_IN_BLUE_API_KEY } = process.env
 
 module.exports = {
-  handleCampSignup: async (req, res) => {
+  handleClassSignup: async (req, res) => {
     try {
       const {
         signerName,
@@ -16,7 +16,7 @@ module.exports = {
         signerPhone,
         participants,
         comments,
-        camp,
+        classObj,
       } = req.body
       const newSignup = await Signup.create({
         signerName,
@@ -24,11 +24,11 @@ module.exports = {
         signerPhone,
         participants,
         comments,
-        summerCampId: camp.id,
+        classId: classObj.id,
       })
       if (newSignup) {
-        sendConfirmEmailToClient(req.body, camp, {})
-        sendConfirmEmailToInstructor(req.body, camp, {})
+        sendConfirmEmailToClient(req.body, classObj, {})
+        sendConfirmEmailToInstructor(req.body, classObj, {})
       }
       res.status(200).send(newSignup)
     } catch (err) {
@@ -37,41 +37,41 @@ module.exports = {
     }
   },
 
-  getActiveCamps: async (req, res) => {
+  getActiveClasses: async (req, res) => {
     try {
-      const camps = await SummerCamp.findAll({
+      const classes = await Class.findAll({
         where: {
           active: true,
         },
       })
-      res.status(200).send(camps)
+      res.status(200).send(classes)
     } catch (err) {
       console.error(err)
       res.status(500).send(err)
     }
   },
 
-  getCamp: async (req, res) => {
-    const { camp_name } = req.params
+  getClass: async (req, res) => {
+    const { classId } = req.params
     try {
-      const camp = await SummerCamp.findOne({
+      const classObj = await Class.findOne({
         where: {
-          href: camp_name,
+          id: classId,
         },
       })
-      res.status(200).send(camp)
+      res.status(200).send(classObj)
     } catch (err) {
       console.error(err)
       res.status(500).send(err)
     }
   },
 
-  getCampSignups: async (req, res) => {
-    const { camp_id } = req.params
+  getClassSignups: async (req, res) => {
+    const { class_id } = req.params
     try {
       const signups = await Signup.findAll({
         where: {
-          summerCampId: camp_id,
+          classId: class_id,
         },
       })
       res.status(200).send(signups)
@@ -81,7 +81,7 @@ module.exports = {
   },
 }
 
-function sendConfirmEmailToClient(formInfo, camp, instructor) {
+function sendConfirmEmailToClient(formInfo, classObj, instructor) {
   const instructorName = instructor.name || 'Malena Hirst'
   const instructorEmail = instructor.email || 'malena.hirst@gmail.com'
   const instructorPhone = instructor.phone || '(385) 321-0150'
@@ -93,7 +93,7 @@ function sendConfirmEmailToClient(formInfo, camp, instructor) {
 
     new SibApiV3Sdk.TransactionalEmailsApi()
       .sendTransacEmail({
-        subject: `You signed up for ${camp.title} through Malena Hirst!`,
+        subject: `You signed up for ${classObj.title} through Malena Hirst!`,
         sender: {
           email: 'info@malenahirst.app',
           name: 'Malena Hirst app',
@@ -104,7 +104,7 @@ function sendConfirmEmailToClient(formInfo, camp, instructor) {
         to: [{ name: signerName, email: signerEmail }],
         htmlContent: `<html>
         <body>
-          <h3>You have successfully signed up for ${camp.title}!</h3>
+          <h3>You have successfully signed up for ${classObj.title}!</h3>
           <p>We will send more details to you once the class gets closer</p>
           <br/>
           <h4>This is the info we recieved: </h4>
@@ -138,7 +138,7 @@ function sendConfirmEmailToClient(formInfo, camp, instructor) {
   }
 }
 
-function sendConfirmEmailToInstructor(formInfo, camp, instructor) {
+function sendConfirmEmailToInstructor(formInfo, classObj, instructor) {
   const instructorName = instructor.name || 'Malena Hirst'
   const instructorEmail = instructor.email || 'malena.hirst@gmail.com'
   const instructorPhone = instructor.phone || '(385) 321-0150'
@@ -150,7 +150,7 @@ function sendConfirmEmailToInstructor(formInfo, camp, instructor) {
 
     new SibApiV3Sdk.TransactionalEmailsApi()
       .sendTransacEmail({
-        subject: `${signerName} SIGNED UP FOR ${camp.title}!`,
+        subject: `${signerName} SIGNED UP FOR ${classObj.title}!`,
         sender: {
           email: 'info@malenahirst.app',
           name: 'Malena Hirst app',
@@ -161,7 +161,7 @@ function sendConfirmEmailToInstructor(formInfo, camp, instructor) {
         to: [{ name: instructorName, email: instructorEmail }],
         htmlContent: `<html>
         <body>
-          <h3>You have a new signup for ${camp.title}!</h3>
+          <h3>You have a new signup for ${classObj.title}!</h3>
           <br/>
           <h4>This is the info we recieved: </h5>
           <p>Name: ${signerName}</p>

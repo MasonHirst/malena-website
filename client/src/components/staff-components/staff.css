@@ -1,0 +1,32 @@
+.login-page-card {
+  padding: 25px;
+  width: 400px;
+  margin: 0 auto;
+}
+
+
+.age-limit-section {
+  display: flex;
+  gap: 15px;
+}
+
+.flex-gap-15 {
+  width: 100%;
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+
+
+
+@media (max-width: 750px) {
+
+}
+
+@media (max-width: 500px) {
+  .login-page-card {
+    padding: 15px;
+    width: 250px
+  }
+}

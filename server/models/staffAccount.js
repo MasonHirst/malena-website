@@ -4,7 +4,7 @@ const { DataTypes } = require('sequelize')
 
 const { STRING, INTEGER, ARRAY, JSON, BOOLEAN } = DataTypes
 
-const Signup = db.define('signup', {
+const StaffAccount = db.define('staff_account', {
   id: {
     type: STRING,
     defaultValue: shortid.generate,
@@ -12,11 +12,10 @@ const Signup = db.define('signup', {
     allowNull: false,
     unique: true,
   },
-  signerName: { type: STRING, allowNull: false },
-  signerEmail: { type: STRING, allowNull: false },
-  signerPhone: { type: STRING, allowNull: false },
-  participants: { type: ARRAY(DataTypes.JSON), allowNull: false },
-  comments: STRING(1000),
+  name: { type: STRING, allowNull: false },
+  email: { type: STRING, allowNull: false },
+  hashed_pass: { type: STRING, allowNull: false },
+  full_power: { type: BOOLEAN, defaultValue: false },
 })
 
-module.exports = Signup
+module.exports = StaffAccount

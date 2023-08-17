@@ -4,9 +4,9 @@ import { useMediaQuery } from '@mui/material'
 
 const { Dialog, Typography, Button, Box, DialogActions } = muiStyles
 
-const CampConfirmDialog = ({ showDialog, setShowDialog, formInfo, handleSubmitForm }) => {
+const ClassConfirmDialog = ({ showDialog, setShowDialog, formInfo, handleSubmitForm }) => {
   const {
-    camp,
+    classObj,
     signerName,
     signerEmail,
     signerPhone,
@@ -50,7 +50,7 @@ const CampConfirmDialog = ({ showDialog, setShowDialog, formInfo, handleSubmitFo
           fontWeight: 'bold',
         }}
       >
-        {camp.needGuardianSignup
+        {classObj.need_guardian_signup
           ? 'Parent/guardian contact info'
           : 'Your contact info'}
       </Typography>
@@ -137,4 +137,4 @@ const CampConfirmDialog = ({ showDialog, setShowDialog, formInfo, handleSubmitFo
   )
 }
 
-export default CampConfirmDialog
+export default ClassConfirmDialog
