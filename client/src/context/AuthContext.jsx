@@ -11,11 +11,13 @@ const NOT_AUTHENTICATED = 'NOT_AUTHENTICATED'
 export function Authentication({ children }) {
   const [user, setUser] = useState({})
   const [accessToken, setAccessToken] = useState(localStorage.getItem(tokenKey))
-  const [authState, setAuthState] = useState(NOT_AUTHENTICATED)
+  const [authState, setAuthState] = useState(LOADING)
 
   function logout() {
     localStorage.removeItem(tokenKey)
     setUser(null)
+    setAccessToken(null)
+    setAuthState(NOT_AUTHENTICATED)
   }
 
   function handleContextLogin(data) {
@@ -23,7 +25,7 @@ export function Authentication({ children }) {
     if (data.accessToken) {
       localStorage.setItem(tokenKey, data.accessToken)
       setAccessToken(data.accessToken)
-      setAuthState(AUTHENTICATED)
+      setAuthState(LOADING)
 
       axios.interceptors.request.use(function (config) {
         config.headers.Authorization = data.accessToken

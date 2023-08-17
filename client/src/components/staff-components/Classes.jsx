@@ -14,12 +14,16 @@ const Classes = () => {
   const [showEditClassForm, setShowEditClassForm] = useState(false)
 
   function handleSubmitEditClass(editedClass) {
+    editedClass.id = classToEdit.id
     setLoading(true)
     axios
       .put('/api/staff/classes/update', { editedClass })
       .then(({ data }) => {
-        console.log('data: ', data)
-        clearSessionStorageValues()
+        if (data.id) {
+          // clearSessionStorageValues()
+          setShowEditClassForm(false)
+          getAllClasses()
+        } else console.error('error updating class')
       })
       .catch(console.error)
       .finally(() => setLoading(false))
@@ -40,12 +44,17 @@ const Classes = () => {
       .finally(() => setLoading(false))
   }
 
-
   function handleEditClass(classObj) {
     setClassToEdit(classObj)
     setShowEditClassForm(true)
   }
-  
+
+  const orderedClasses = classList.sort((a, b) => {
+    const aDate = dayjs(a.start_date)
+    const bDate = dayjs(b.start_date)
+    return aDate.isBefore(bDate) ? -1 : 1
+  })
+
   function clearSessionStorageValues() {
     sessionStorage.removeItem('classTitle')
     sessionStorage.removeItem('imgUrl')
@@ -75,6 +84,7 @@ const Classes = () => {
           textTransform: 'none',
           fontWeight: 'bold',
           fontSize: '18px',
+          margin: '20px',
         }}
         onClick={() => setShowNewClassForm(!showNewClassForm)}
       >
@@ -84,14 +94,19 @@ const Classes = () => {
       <Box
         sx={{
           display: 'flex',
-          flexDirection: 'column',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
           gap: '20px',
           padding: '10px',
         }}
       >
-        {classList.map((c, i) => {
+        {orderedClasses.map((c, i) => {
           return (
-            <ClassListCard key={i} classObj={c} handleEditSelect={handleEditClass} />
+            <ClassListCard
+              key={i}
+              classObj={c}
+              handleEditSelect={handleEditClass}
+            />
           )
         })}
       </Box>

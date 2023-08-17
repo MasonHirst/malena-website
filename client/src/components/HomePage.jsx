@@ -6,7 +6,12 @@ const { Typography, Button, Box } = muiStyles
 
 const HomePage = () => {
   return (
-    <>
+    <Box sx={{
+      width: 'min(100%, 1100px)',
+      margin: '0 auto',
+      padding: '0 10px',
+      marginTop: '60px',
+    }}>
       <HomeHeroSection />
       {/* <Box
         sx={{
@@ -76,7 +81,7 @@ const HomePage = () => {
           not be in the room during session.
         </Typography>
       </div> */}
-    </>
+    </Box>
   )
 }
 

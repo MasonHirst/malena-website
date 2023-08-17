@@ -24,6 +24,11 @@ const DashboardNav = ({ drawerOpen, setDrawerOpen }) => {
       icon: 'class',
       link: 'classes',
     },
+    {
+      name: 'Sign-ups',
+      icon: 'list',
+      link: 'signups',
+    }
   ]
 
   return (

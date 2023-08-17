@@ -19,7 +19,6 @@ const HomeHeroSection = () => {
         alignItems: 'center',
         justifyContent: 'space-evenly',
         marginBottom: '120px',
-        marginTop: '60px',
         padding: '0 10px',
       }}
     >

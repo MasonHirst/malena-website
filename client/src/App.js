@@ -16,20 +16,14 @@ function App() {
     <Authentication>
       <div className='App'>
         <Header />
-        <Box
-          sx={{
-            margin: '0 auto',
-            maxWidth: '1100px',
-          }}
-        >
-          <Routes>
-            <Route path='/' element={<HomePage />} />
-            <Route path='/classes' element={<Classes />} />
-            <Route path='/classes/:className' element={<ClassPage />} />
-            <Route path='/staff/*' element={<StaffPortalDirector />} />
-            <Route path='*' element={<Navigate to='/' />} />
-          </Routes>
-        </Box>
+
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/classes' element={<Classes />} />
+          <Route path='/classes/:className' element={<ClassPage />} />
+          <Route path='/staff/*' element={<StaffPortalDirector />} />
+          <Route path='*' element={<Navigate to='/' />} />
+        </Routes>
 
         {/* <Footer /> */}
       </div>

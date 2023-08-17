@@ -5,6 +5,7 @@ const cloudinary = require('cloudinary')
 const Signup = require('../models/signup')
 const Class = require('../models/class')
 const SibApiV3Sdk = require('sib-api-v3-sdk')
+const dayjs = require('dayjs')
 const { SEND_IN_BLUE_API_KEY } = process.env
 
 module.exports = {
@@ -19,12 +20,12 @@ module.exports = {
         classObj,
       } = req.body
       const newSignup = await Signup.create({
-        signerName,
-        signerEmail,
-        signerPhone,
+        signer_name: signerName,
+        signer_email: signerEmail,
+        signer_phone: signerPhone,
         participants,
         comments,
-        classId: classObj.id,
+        class_id: classObj.id,
       })
       if (newSignup) {
         sendConfirmEmailToClient(req.body, classObj, {})
@@ -44,7 +45,29 @@ module.exports = {
           active: true,
         },
       })
-      res.status(200).send(classes)
+
+      const today = dayjs()
+      const todayYear = today.year()
+      const todayMonth = today.month()
+      const todayDate = today.date()
+      // if auto_show_by_date is true, only return classes whose end date is today or after today.
+      const classesToShow = classes.filter((c) => {
+        if (c.auto_show_by_date) {
+          const endDate = dayjs(c.end_date)
+          const endDateYear = endDate.year()
+          const endDateMonth = endDate.month()
+          const endDateDate = endDate.date()
+          if (todayYear <= endDateYear) {
+            if (todayMonth <= endDateMonth) {
+              if (todayDate <= endDateDate) {
+                return true
+              } else return false
+            } else return false
+          } else return false
+        } else return true
+      })
+
+      res.status(200).send(classesToShow)
     } catch (err) {
       console.error(err)
       res.status(500).send(err)
@@ -66,19 +89,19 @@ module.exports = {
     }
   },
 
-  getClassSignups: async (req, res) => {
-    const { class_id } = req.params
-    try {
-      const signups = await Signup.findAll({
-        where: {
-          classId: class_id,
-        },
-      })
-      res.status(200).send(signups)
-    } catch (err) {
-      res.status(500).send(err)
-    }
-  },
+  // getClassSignups: async (req, res) => {
+  //   const { class_id } = req.params
+  //   try {
+  //     const signups = await Signup.findAll({
+  //       where: {
+  //         classId: class_id,
+  //       },
+  //     })
+  //     res.status(200).send(signups)
+  //   } catch (err) {
+  //     res.status(500).send(err)
+  //   }
+  // },
 }
 
 function sendConfirmEmailToClient(formInfo, classObj, instructor) {

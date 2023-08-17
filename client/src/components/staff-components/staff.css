@@ -17,6 +17,19 @@
   justify-content: space-between;
 }
 
+.no-wrap-ellipsis {
+  max-width: 100%;
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflowing content */
+  text-overflow: ellipsis; /* Display ellipsis (...) for overflowed content */
+}
+
+.table-header-text {
+  font-size: 1rem !important;
+  font-weight: bold !important;
+}
+
+
 
 
 

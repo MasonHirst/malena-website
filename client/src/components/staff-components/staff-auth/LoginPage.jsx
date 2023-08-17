@@ -9,7 +9,7 @@ const LoginPage = () => {
   const { handleContextLogin } = useContext(AuthContext)
   const navigate = useNavigate()
   const [loginLoading, setLoginLoading] = useState(false)
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState(localStorage.getItem('malenaSiteEmailLogin') || '')
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState('')
   const [passError, setPassError] = useState('')
@@ -60,6 +60,7 @@ const LoginPage = () => {
         <TextField
           disabled={loginLoading}
           fullWidth
+          autoFocus={localStorage.getItem('malenaSiteEmailLogin') ? false : true}
           label='Email'
           size='small'
           variant='outlined'
@@ -71,6 +72,7 @@ const LoginPage = () => {
         <TextField
           fullWidth
           disabled={loginLoading}
+          autoFocus={localStorage.getItem('malenaSiteEmailLogin') ? true : false}
           label='Password'
           size='small'
           variant='outlined'

@@ -1,5 +1,6 @@
 import { Box, Button, Card, Typography } from '@mui/material'
 import React from 'react'
+import { getAgeRange, getClassTimeRange, getDateRange } from '../../utilityFunctions'
 
 const ClassListCard = ({ classObj, handleEditSelect }) => {
   const {
@@ -9,61 +10,26 @@ const ClassListCard = ({ classObj, handleEditSelect }) => {
     end_time,
     min_age,
     max_age,
-    id,
     pic_url,
-    href,
     title,
     per_cost,
     short_desc,
   } = classObj
 
-  let dateRange
-  if (start_date === end_date) {
-    dateRange = formatClassDate(start_date)
-  } else {
-    dateRange = formatClassDate(start_date) + ' - ' + formatClassDate(end_date)
-  }
-
-  let ageRange
-  if (min_age === max_age) {
-    ageRange = min_age
-  } else if (min_age === 0 && max_age < 100) {
-    ageRange = max_age + ' and under'
-  } else if (min_age > 0 && max_age === 100) {
-    ageRange = min_age + ' and up'
-  } else if (min_age > 0 && max_age < 100) {
-    ageRange = min_age + ' - ' + max_age
-  } else if (min_age === 0 && max_age === 100) {
-    ageRange = 'All ages'
-  }
-
-  function formatClassDate(date) {
-    const dateObj = new Date(date)
-    const month = dateObj.toLocaleString('default', { month: 'short' })
-    const day = dateObj.getDate()
-    const year = dateObj.getFullYear()
-    return `${month} ${day}, ${year}`
-  }
-
-  function formatClassTimes(dateString) {
-    const date = new Date(dateString)
-    const hours = date.getHours()
-    const minutes = date.getMinutes()
-    const ampm = hours >= 12 ? 'pm' : 'am'
-    const formattedHours = hours % 12 === 0 ? 12 : hours % 12
-    const formattedMinutes = minutes.toString().padStart(2, '0')
-    return `${formattedHours}:${formattedMinutes}${ampm}`
-  }
-
   return (
     <Card
       elevation={2}
-      sx={{ maxWidth: 320, display: 'flex', flexDirection: 'column' }}
+      sx={{
+        width: 'min(100%, 300px)',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
     >
       <Box
         className='class-card-img-cont'
         sx={{
           backgroundImage: `url(${pic_url})`,
+          backgroundColor: 'rgba(0,0,0,0.3)',
         }}
       />
       <Box
@@ -91,7 +57,7 @@ const ClassListCard = ({ classObj, handleEditSelect }) => {
             variant='h6'
             sx={{ opacity: 0.8, textAlign: 'center', fontWeight: 'bold' }}
           >
-            {dateRange}
+            {getDateRange(start_date, end_date)}
           </Typography>
           <Box
             sx={{
@@ -109,10 +75,7 @@ const ClassListCard = ({ classObj, handleEditSelect }) => {
                 fontSize: { xs: '16px', sm: '18px' },
               }}
             >
-              {'Time: ' +
-                formatClassTimes(start_time) +
-                ' - ' +
-                formatClassTimes(end_time)}
+              {'Time: ' + getClassTimeRange(start_time, end_time)}
             </Typography>
             <Typography
               variant='subtitle1'
@@ -132,7 +95,7 @@ const ClassListCard = ({ classObj, handleEditSelect }) => {
                 fontSize: { xs: '16px', sm: '18px' },
               }}
             >
-              {'Ages: ' + ageRange}
+              {'Ages: ' + getAgeRange(min_age, max_age)}
             </Typography>
           </Box>
           <Typography

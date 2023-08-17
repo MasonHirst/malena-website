@@ -12,9 +12,9 @@ const Signup = db.define('signup', {
     allowNull: false,
     unique: true,
   },
-  signerName: { type: STRING, allowNull: false },
-  signerEmail: { type: STRING, allowNull: false },
-  signerPhone: { type: STRING, allowNull: false },
+  signer_name: { type: STRING, allowNull: false },
+  signer_email: { type: STRING, allowNull: false },
+  signer_phone: { type: STRING, allowNull: false },
   participants: { type: ARRAY(DataTypes.JSON), allowNull: false },
   comments: STRING(1000),
 })

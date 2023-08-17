@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import muiStyles from '../../styles/muiStyles'
-import { useNavigate } from 'react-router-dom'
 import ClassPreviewCard from './ClassPreviewCard'
+import dayjs from 'dayjs'
 
 const { Typography, Button, Box, Card, Skeleton } = muiStyles
 
 const Classes = () => {
   const [classesLoading, setClassesLoading] = useState(false)
   const [classesError, setClassesError] = useState('')
-  const navigate = useNavigate()
   const [classes, setClasses] = useState([])
 
   useEffect(() => {
+    document.title = 'Malena Hirst - Classes'
+
     setClassesLoading(true)
     axios
-      .get('/api/classes')
+      .get('/api/get/classes')
       .then(({ data }) => {
         if (Array.isArray(data)) {
           setClasses(data)
@@ -29,25 +30,15 @@ const Classes = () => {
       .finally(() => {
         setClassesLoading(false)
       })
-
+      
     return () => {}
   }, [])
 
-  function sortByStartDate(classes) {
-    return classes.sort((a, b) => {
-      const aDate = new Date(a.startDate)
-      const bDate = new Date(b.startDate)
-      return aDate - bDate
-    })
-  }
-
-  const mappedClassCards =
-    classes.length > 0 &&
-    sortByStartDate(classes).map((classObj, index) => {
-      document.title = 'Malena Hirst - Classes'
-
-      return <ClassPreviewCard key={index} classObj={classObj} />
-    })
+  const orderedClasses = classes.sort((a, b) => {
+    const aDate = dayjs(a.start_date)
+    const bDate = dayjs(b.start_date)
+    return aDate.isBefore(bDate) ? -1 : 1
+  })
 
   return (
     <Box
@@ -55,6 +46,9 @@ const Classes = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        width: 'min(100%, 1100px)',
+        margin: '0 auto',
+        padding: '0 10px',
         marginTop: '40px',
       }}
     >
@@ -76,9 +70,8 @@ const Classes = () => {
         sx={{
           display: 'flex',
           gap: '15px',
-          // alignItems: 'flex-start',
           flexWrap: 'wrap',
-          padding: '0 10px',
+          // padding: '0 10px',
           width: '100%',
           justifyContent: 'center',
           rowGap: '30px',
@@ -122,7 +115,9 @@ const Classes = () => {
             />
           </Box>
         ) : (
-          mappedClassCards
+          orderedClasses.map((classObj, index) => {
+            return <ClassPreviewCard key={index} classObj={classObj} />
+          })
         )}
       </Box>
       <Typography

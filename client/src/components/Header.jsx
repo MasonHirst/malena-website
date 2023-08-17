@@ -21,7 +21,9 @@ function Header() {
   return (
     <Box
       sx={{
-        // position: 'sticky',
+        position: 'sticky',
+        zIndex: '100',
+        backgroundColor: 'white',
         top: 0,
         height: '70px',
         width: '100%',

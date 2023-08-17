@@ -28,6 +28,7 @@ const Class = db.define('class', {
   href: STRING,
   need_guardian_signup: { type: BOOLEAN, defaultValue: true },
   active: { type: BOOLEAN, defaultValue: true },
+  auto_show_by_date: { type: BOOLEAN, defaultValue: true },
   class_type: STRING,
 })
 

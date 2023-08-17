@@ -18,6 +18,7 @@ const allClasses = [
     href: 'improv-camp',
     need_guardian_signup: true,
     active: true,
+    auto_show_by_date: true,
     class_type: 'summer_camp',
   },
   {
@@ -39,6 +40,7 @@ const allClasses = [
     href: 'art-camp',
     need_guardian_signup: true,
     active: true,
+    auto_show_by_date: true,
     class_type: 'summer_camp',
   },
   {
@@ -60,6 +62,7 @@ const allClasses = [
     href: 'partner-paint-night',
     need_guardian_signup: false,
     active: true,
+    auto_show_by_date: true,
     class_type: 'class',
   },
 ]

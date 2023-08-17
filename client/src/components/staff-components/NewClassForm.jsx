@@ -26,6 +26,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { MobileDatePicker, TimePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
+import { Link } from 'react-router-dom'
+import { blue } from '@mui/material/colors'
 
 const defaultClassData = {
   title: '',
@@ -33,8 +35,6 @@ const defaultClassData = {
   full_desc: '',
   other_info: '',
   pic_url: '',
-  // start_date: dayjs(),
-  // end_date: dayjs(),
   start_date: null,
   end_date: null,
   start_time: null,
@@ -46,6 +46,7 @@ const defaultClassData = {
   href: '',
   need_guardian_signup: false,
   active: true,
+  auto_show_by_date: true,
   class_type: 'class',
 }
 
@@ -73,6 +74,7 @@ const NewClassForm = ({
     href,
     need_guardian_signup,
     active: isActive,
+    auto_show_by_date,
     class_type,
   } = classData
   const { loading, setLoading } = useContext(StaffContext)
@@ -84,20 +86,21 @@ const NewClassForm = ({
   const [fullDesc, setFullDesc] = useState(full_desc)
   const [otherInfo, setOtherInfo] = useState(other_info)
   const [locationStr, setLocationStr] = useState(location)
-  const [guardianSignup, setGuardianSignup] = useState(
-    need_guardian_signup
+  const [guardianSignup, setGuardianSignup] = useState(need_guardian_signup)
+  const [isMultiDay, setIsMultiDay] = useState(start_date !== end_date)
+  const [startDate, setStartDate] = useState(
+    start_date ? dayjs(start_date) : dayjs()
   )
-  const [isMultiDay, setIsMultiDay] = useState(
-    start_date !== end_date
-  )
-  const [startDate, setStartDate] = useState(start_date ? dayjs(start_date) : dayjs())
   const [endDate, setEndDate] = useState(end_date ? dayjs(end_date) : dayjs())
-  const [startTime, setStartTime] = useState(start_time)
-  const [endTime, setEndTime] = useState(end_time)
-  const [pricePer, setPricePer] = useState(per_cost)
-  const [active, setActive] = useState(isActive)
+  const [startTime, setStartTime] = useState(
+    start_time ? dayjs(start_time) : null
+  )
+  const [endTime, setEndTime] = useState(end_time ? dayjs(end_time) : null)
   const [minAge, setMinAge] = useState(min_age)
   const [maxAge, setMaxAge] = useState(max_age)
+  const [pricePer, setPricePer] = useState(per_cost)
+  const [active, setActive] = useState(isActive)
+  const [autoShowByDate, setAutoShowByDate] = useState(auto_show_by_date)
 
   const ageChoices = [
     { label: 'no minimum age', value: 0 },
@@ -142,6 +145,7 @@ const NewClassForm = ({
       href: classTitle.toLowerCase().split(' ').join('-'),
       need_guardian_signup: guardianSignup,
       active: active,
+      auto_show_by_date: autoShowByDate,
       class_type: classType,
     }
 
@@ -149,6 +153,7 @@ const NewClassForm = ({
   }
 
   useEffect(() => {
+    if (!saveFormSession) return
     // if any of the session storage values exist on render, set the state to those values
     if (sessionStorage.getItem('classTitle'))
       setClassTitle(sessionStorage.getItem('classTitle'))
@@ -178,6 +183,8 @@ const NewClassForm = ({
       setPricePer(JSON.parse(sessionStorage.getItem('pricePer')))
     if (sessionStorage.getItem('active'))
       setActive(JSON.parse(sessionStorage.getItem('active')))
+    if (sessionStorage.getItem('autoShowByDate'))
+      setAutoShowByDate(JSON.parse(sessionStorage.getItem('autoShowByDate')))
     if (sessionStorage.getItem('guardianSignup'))
       setGuardianSignup(JSON.parse(sessionStorage.getItem('guardianSignup')))
     if (sessionStorage.getItem('minAge'))
@@ -208,6 +215,7 @@ const NewClassForm = ({
     }
     sessionStorage.setItem('pricePer', pricePer)
     sessionStorage.setItem('active', active)
+    sessionStorage.setItem('autoShowByDate', autoShowByDate)
     sessionStorage.setItem('guardianSignup', guardianSignup)
     sessionStorage.setItem('minAge', minAge)
     sessionStorage.setItem('maxAge', maxAge)
@@ -227,6 +235,7 @@ const NewClassForm = ({
     endTime,
     pricePer,
     active,
+    autoShowByDate,
     minAge,
     maxAge,
   ])
@@ -325,6 +334,29 @@ const NewClassForm = ({
           value={classTitle}
           onChange={(e) => setClassTitle(e.target.value)}
         />
+
+        <Typography
+          sx={{
+            display: 'flex',
+            gap: '5px',
+            alignItems: 'center',
+          }}
+        >
+          <a
+            href='https://unsplash.com'
+            target='_blank'
+            style={{
+              color: blue[600],
+              width: '100%',
+              cursor: 'pointer',
+              width: 'fit-content',
+            }}
+            underline='hover'
+          >
+            unsplash.com
+          </a>
+          for copyright-free images
+        </Typography>
 
         <section
           style={{
@@ -549,7 +581,7 @@ const NewClassForm = ({
 
         <FormGroup>
           <FormControlLabel
-            label='Active (show on website)'
+            label='Active'
             control={
               <Switch
                 checked={active}
@@ -557,6 +589,25 @@ const NewClassForm = ({
               />
             }
           />
+          <FormHelperText>
+            If checked, the class can be displayed on the public site.
+          </FormHelperText>
+        </FormGroup>
+
+        <FormGroup>
+          <FormControlLabel
+            label='Auto show by date'
+            control={
+              <Switch
+                checked={autoShowByDate}
+                onChange={(e) => setAutoShowByDate(e.target.checked)}
+              />
+            }
+          />
+          <FormHelperText>
+            If checked, the class will not be shown on the public site once the
+            end date has passed.
+          </FormHelperText>
         </FormGroup>
       </form>
 
@@ -567,6 +618,7 @@ const NewClassForm = ({
       <section className='flex-gap-15'>
         <Button
           color='secondary'
+          disabled={loading}
           sx={{
             textTransform: 'none',
             fontWeight: 'bold',
@@ -579,6 +631,7 @@ const NewClassForm = ({
         <Button
           variant='contained'
           color='primary'
+          disabled={loading || !!formError}
           sx={{
             textTransform: 'none',
             fontWeight: 'bold',

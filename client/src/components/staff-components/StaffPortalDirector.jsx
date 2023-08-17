@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { Route, Routes, Navigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
 import LoginPage from './staff-auth/LoginPage'
@@ -9,12 +9,12 @@ import { useMediaQuery } from '@mui/material'
 import muiStyles from '../../styles/muiStyles'
 import Classes from './Classes'
 import { StaffContextFunction } from '../../context/StaffContext'
+import Signups from './Signups'
 const { Box } = muiStyles
 
 const StaffPortalDirector = () => {
   const { authState } = useContext(AuthContext)
   const [dashboardNavOpen, setDashboardNavOpen] = useState(false)
-  const is800Screen = useMediaQuery('(max-width:800px)')
 
   if (authState === 'LOADING') {
     return (
@@ -31,14 +31,14 @@ const StaffPortalDirector = () => {
     )
   }
 
+
   return (
-    <div>
+    <>
       {authState === 'AUTHENTICATED' ? (
         <StaffContextFunction>
           <Box
             sx={{
               display: 'flex',
-              gap: '1rem',
               height: 'calc(100vh - 70px)',
             }}
           >
@@ -50,13 +50,13 @@ const StaffPortalDirector = () => {
               sx={{
                 maxHeight: 'calc(100vh - 70px)',
                 overflowY: 'auto',
-                paddingTop: '35px',
+                width: '100%',
               }}
             >
               <Routes>
-                <Route path='/dashboard' element={<Dashboard />} />
-                <Route path='/classes' element={<Classes />} />
-                {/* <Route path='*' element={<Navigate to='dashboard' />} /> */}
+                <Route path='dashboard' element={<Dashboard />} />
+                <Route path='classes' element={<Classes />} />
+                <Route path='signups' element={<Signups />} />
                 <Route path='*' element={<Navigate to='classes' />} />
               </Routes>
             </Box>
@@ -75,7 +75,7 @@ const StaffPortalDirector = () => {
           </Routes>
         </Box>
       )}
-    </div>
+    </>
   )
 }
 
