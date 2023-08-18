@@ -9,7 +9,7 @@ import Dashboard from './dashboard/Dashboard'
 import StaffPortalNav from './StaffPortalNav'
 import muiStyles from '../../styles/muiStyles'
 import { StaffContextFunction } from '../../context/StaffContext'
-import Signups from './classes/Signups'
+import ClassesManagement from './classes/ClassesManagement'
 const { Box } = muiStyles
 
 const StaffPortalDirector = () => {
@@ -68,7 +68,7 @@ const StaffPortalDirector = () => {
             >
               <Routes>
                 <Route path='dashboard' element={<Dashboard />} />
-                <Route path='classes' element={<Signups />} />
+                <Route path='classes' element={<ClassesManagement />} />
                 <Route path='*' element={<Navigate to='classes' />} />
               </Routes>
             </Box>

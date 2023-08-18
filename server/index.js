@@ -7,7 +7,6 @@ const path = require('path')
 const db = require('./util/dbConfig')
 const seed = require('./util/seed')
 const Signup = require('./models/signup')
-const StaffAccount = require('./models/staffAccount')
 const Class = require('./models/class')
 
 //! Middleware

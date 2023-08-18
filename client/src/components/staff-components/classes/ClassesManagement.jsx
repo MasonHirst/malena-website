@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Box, Button, Divider, Stack, Typography } from '@mui/material'
 import { StaffContext } from '../../../context/StaffContext'
 import axios from 'axios'
-import SignupCollapse from './SignupCollapse'
+import ClassCollapseCard from './ClassCollapseCard'
 import { filterOrderClasses } from '../../../utilityFunctions'
 import NewClassForm from '../../NewClassForm'
 import AddIcon from '@mui/icons-material/Add'
 import { toast } from 'react-toastify'
 
-const Signups = () => {
+const ClassesManagement = () => {
   const { loading, setLoading, classList, getAllClasses } =
     useContext(StaffContext)
   const [signups, setSignups] = useState([])
@@ -149,7 +149,7 @@ const Signups = () => {
         <Box className='class-card-cont'>
           {filterOrderClasses(classesWithSignups).map((classObj, i) => {
             return (
-              <SignupCollapse
+              <ClassCollapseCard
                 key={i}
                 classObj={classObj}
                 getAllSignups={getAllClassSignups}
@@ -171,7 +171,7 @@ const Signups = () => {
         <Box className='class-card-cont'>
           {filterOrderClasses(classesWithSignups, false).map((classObj, i) => {
             return (
-              <SignupCollapse
+              <ClassCollapseCard
                 key={i}
                 classObj={classObj}
                 getAllSignups={getAllClassSignups}
@@ -204,4 +204,4 @@ const Signups = () => {
   )
 }
 
-export default Signups
+export default ClassesManagement

@@ -38,9 +38,9 @@ import {
   getParticipantCount,
   isClassShowingPublicly,
 } from '../../../utilityFunctions'
-import { blue, green, red } from '@mui/material/colors'
+import { green, red } from '@mui/material/colors'
 
-const SignupCollapse = ({ classObj, getAllSignups, handleEditSelect }) => {
+const ClassCollapseCard = ({ classObj, getAllSignups, handleEditSelect }) => {
   const {
     title,
     start_date,
@@ -419,4 +419,4 @@ const SignupCollapse = ({ classObj, getAllSignups, handleEditSelect }) => {
   )
 }
 
-export default SignupCollapse
+export default ClassCollapseCard

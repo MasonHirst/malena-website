@@ -9,8 +9,6 @@ import '../src/components/staff-components/staff.css'
 import '../src/components/classes/classes.css'
 import { Authentication } from './context/AuthContext'
 
-const { Box } = muiStyles
-
 function App() {
   return (
     <Authentication>
