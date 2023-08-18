@@ -54,7 +54,7 @@ const Classes = () => {
     >
       <Typography
         variant='h3'
-        color='primary'
+        // color='primary'
         sx={{
           fontWeight: 'bold',
           marginBottom: '40px',

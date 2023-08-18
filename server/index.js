@@ -17,16 +17,13 @@ app.use(express.json())
 app.use(cors())
 
 //! Relationships
-// Class.hasMany(Signup)
-// Signup.belongsTo(Class)
-// rewrite the previous relationships between class and signup so that the class id is stored as "class_id" instead of "classId"
 Class.hasMany(Signup, { foreignKey: 'class_id' })
 Signup.belongsTo(Class, { foreignKey: 'class_id' })
 
 //! Endpoints
 const { handleClassSignup, getActiveClasses, getClass } = require('./controllers/signupController')
 const { loginStaff, createStaffAccount, findStaffAccount, validateToken } = require('./controllers/authController')
-const { getAllClasses, createNewClass, editExistingClass, getAllSignups } = require('./controllers/staffController')
+const { getAllClasses, createNewClass, editExistingClass, getAllSignups, updateSignupPaidStatus, deleteClassSignup, deleteClassById } = require('./controllers/staffController')
 
 // Unprotected endpoints
 app.post('/api/class-signup', handleClassSignup)
@@ -41,7 +38,9 @@ app.get('/api/staff/classes/all', validateToken, getAllClasses)
 app.post('/api/staff/classes/create', validateToken, createNewClass)
 app.put('/api/staff/classes/update', validateToken, editExistingClass)
 app.get('/api/staff/get/signups', validateToken, getAllSignups)
-app.put('/api/staff/signup/update/paid', validateToken)
+app.put('/api/staff/signup/update/paid', validateToken, updateSignupPaidStatus)
+app.delete('/api/staff/signup/delete/:signupId', validateToken, deleteClassSignup)
+app.delete('/api/staff/classes/delete/:classId', validateToken, deleteClassById)
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '.', 'build', 'index.html'))

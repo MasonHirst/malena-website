@@ -5,14 +5,22 @@ import axios from 'axios'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import './index.css'
 import App from './App'
+import { blue, green } from '@mui/material/colors'
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#88B06A',
+      // main: '#88B06A',
+      // main: green[600],
+      // main: '#228B22'
+      // main: 'rgb(34, 139, 34)'
+      main: 'rgb(34, 139, 34, .9)'
     },
     secondary: {
-      main: '#E33E7F',
+      // main: '#E33E7F',
+      // main: blue[400],
+      // main: 'rgb(222, 49, 99, .9)'
+      main: 'rgb(227, 11, 92, .75)'
     },
   },
 })

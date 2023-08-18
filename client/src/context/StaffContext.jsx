@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { AuthContext } from './AuthContext'
 import dayjs from 'dayjs'
+import { toast } from 'react-toastify'
 
 export const StaffContext = createContext()
 
@@ -27,6 +28,7 @@ export function StaffContextFunction({ children }) {
       })
       .catch((err) => {
         if (err.response.request.status === 401) {
+          toast.error('Unauthorized. Please login again.')
           console.error('unauthorized')
           logout()
         }

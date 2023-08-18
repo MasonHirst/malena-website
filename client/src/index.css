@@ -74,6 +74,14 @@ code {
   background-position: center;
 }
 
+.class-main-background-img {
+  width: min(100% + 10px, 600px);
+  height: min(62vw, 400px);
+  background-position: center;
+  background-size: cover;
+  border-radius: 6px;
+}
+
 @media (max-width: 600px) {
   .class-card-img-cont {
     height: 160px;

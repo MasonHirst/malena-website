@@ -4,7 +4,6 @@
   margin: 0 auto;
 }
 
-
 .age-limit-section {
   display: flex;
   gap: 15px;
@@ -19,9 +18,9 @@
 
 .no-wrap-ellipsis {
   max-width: 100%;
-  white-space: nowrap; /* Prevent text from wrapping */
-  overflow: hidden; /* Hide overflowing content */
-  text-overflow: ellipsis; /* Display ellipsis (...) for overflowed content */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .table-header-text {
@@ -29,17 +28,28 @@
   font-weight: bold !important;
 }
 
+.class-card-cont {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding: 10px;
+}
 
-
-
+.add-class-btn {
+  color: white;
+  text-transform: none !important;
+  font-weight: bold !important;
+  font-size: 1.1rem !important;
+  width: fit-content !important;
+}
 
 @media (max-width: 750px) {
-
 }
 
 @media (max-width: 500px) {
   .login-page-card {
     padding: 15px;
-    width: 250px
+    width: 250px;
   }
 }

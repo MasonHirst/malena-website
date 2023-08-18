@@ -23,7 +23,6 @@ const ClassConfirmDialog = ({ showDialog, setShowDialog, formInfo, handleSubmitF
           borderRadius: '15px',
           display: 'flex',
           flexDirection: 'column',
-          // gap: '20px',
           minWidth: isSmallScreen ? '100vw' : 'min(550px, calc(100vw - 16px))',
           padding: isSmallScreen ? '50px 10px' : '40px 50px',
         },
@@ -125,10 +124,7 @@ const ClassConfirmDialog = ({ showDialog, setShowDialog, formInfo, handleSubmitF
             fontWeight: 'bold',
             fontSize: '18px',
           }}
-          onClick={() => {
-            handleSubmitForm()
-            setShowDialog(false)
-          }}
+          onClick={handleSubmitForm}
         >
           Submit
         </Button>

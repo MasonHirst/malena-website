@@ -6,6 +6,7 @@ const Signup = require('../models/signup')
 const Class = require('../models/class')
 const SibApiV3Sdk = require('sib-api-v3-sdk')
 const dayjs = require('dayjs')
+const { classNotOver } = require('../utilityFunctions')
 const { SEND_IN_BLUE_API_KEY } = process.env
 
 module.exports = {
@@ -45,26 +46,17 @@ module.exports = {
           active: true,
         },
       })
-
-      const today = dayjs()
-      const todayYear = today.year()
-      const todayMonth = today.month()
-      const todayDate = today.date()
       // if auto_show_by_date is true, only return classes whose end date is today or after today.
       const classesToShow = classes.filter((c) => {
         if (c.auto_show_by_date) {
-          const endDate = dayjs(c.end_date)
-          const endDateYear = endDate.year()
-          const endDateMonth = endDate.month()
-          const endDateDate = endDate.date()
-          if (todayYear <= endDateYear) {
-            if (todayMonth <= endDateMonth) {
-              if (todayDate <= endDateDate) {
-                return true
-              } else return false
-            } else return false
-          } else return false
-        } else return true
+          if (classNotOver(c.end_date)) {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return true
+        }
       })
 
       res.status(200).send(classesToShow)

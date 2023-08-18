@@ -25,7 +25,7 @@ export function Authentication({ children }) {
     if (data.accessToken) {
       localStorage.setItem(tokenKey, data.accessToken)
       setAccessToken(data.accessToken)
-      setAuthState(LOADING)
+      setAuthState(AUTHENTICATED)
 
       axios.interceptors.request.use(function (config) {
         config.headers.Authorization = data.accessToken
@@ -36,9 +36,9 @@ export function Authentication({ children }) {
   }
 
   function getUser(jwt) {
-    if (!jwt) return console.error('no jwt')
-    setAuthState(LOADING)
-    axios
+    if (jwt) {
+      setAuthState(LOADING)
+      axios
       .get('/api/staff/me', { token: jwt })
       .then(({ data }) => {
         if (data.user) {
@@ -58,11 +58,16 @@ export function Authentication({ children }) {
         console.error(err)
         setAuthState(NOT_AUTHENTICATED)
       })
+    } else {
+      setAuthState(NOT_AUTHENTICATED)
+    }
   }
 
   useEffect(() => {
-    if (!user.name && accessToken) {
+    if (accessToken) {
       getUser(accessToken)
+    } else if (!accessToken) {
+      setAuthState(NOT_AUTHENTICATED)
     }
   }, [])
 

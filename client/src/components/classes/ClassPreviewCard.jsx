@@ -54,7 +54,7 @@ const ClassPreviewCard = ({ classObj }) => {
         <Box>
           <Typography
             variant='h5'
-            color='primary'
+            // color='primary'
             sx={{
               fontWeight: 'bold',
               textAlign: 'center',

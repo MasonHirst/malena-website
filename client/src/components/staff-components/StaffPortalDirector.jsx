@@ -1,20 +1,24 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Route, Routes, Navigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
+import { ToastContainer, Slide } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import LoginPage from './staff-auth/LoginPage'
 import SignupPage from './staff-auth/SignupPage'
-import Dashboard from './Dashboard'
-import DashboardNav from './DashboardNav'
-import { useMediaQuery } from '@mui/material'
+import Dashboard from './dashboard/Dashboard'
+import StaffPortalNav from './StaffPortalNav'
 import muiStyles from '../../styles/muiStyles'
-import Classes from './Classes'
 import { StaffContextFunction } from '../../context/StaffContext'
-import Signups from './Signups'
+import Signups from './classes/Signups'
 const { Box } = muiStyles
 
 const StaffPortalDirector = () => {
   const { authState } = useContext(AuthContext)
-  const [dashboardNavOpen, setDashboardNavOpen] = useState(false)
+  const [portalNavOpen, setPortalNavOpen] = useState(false)
+
+  useEffect(() => {
+    document.title = 'Malena Hirst - Staff Portal'
+  }, [])
 
   if (authState === 'LOADING') {
     return (
@@ -31,9 +35,18 @@ const StaffPortalDirector = () => {
     )
   }
 
-
   return (
     <>
+      <ToastContainer
+        position='top-center'
+        newestOnTop
+        draggable
+        hideProgressBar={false}
+        autoClose={3500}
+        pauseOnHover
+        pauseOnFocusLoss={false}
+        theme='light'
+      />
       {authState === 'AUTHENTICATED' ? (
         <StaffContextFunction>
           <Box
@@ -42,9 +55,9 @@ const StaffPortalDirector = () => {
               height: 'calc(100vh - 70px)',
             }}
           >
-            <DashboardNav
-              drawerOpen={dashboardNavOpen}
-              setDrawerOpen={setDashboardNavOpen}
+            <StaffPortalNav
+              drawerOpen={portalNavOpen}
+              setDrawerOpen={setPortalNavOpen}
             />
             <Box
               sx={{
@@ -55,8 +68,7 @@ const StaffPortalDirector = () => {
             >
               <Routes>
                 <Route path='dashboard' element={<Dashboard />} />
-                <Route path='classes' element={<Classes />} />
-                <Route path='signups' element={<Signups />} />
+                <Route path='classes' element={<Signups />} />
                 <Route path='*' element={<Navigate to='classes' />} />
               </Routes>
             </Box>
