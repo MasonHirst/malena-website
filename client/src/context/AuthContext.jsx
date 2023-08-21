@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 export const AuthContext = createContext()
 
@@ -15,9 +16,10 @@ export function Authentication({ children }) {
 
   function logout() {
     localStorage.removeItem(tokenKey)
-    setUser(null)
     setAccessToken(null)
     setAuthState(NOT_AUTHENTICATED)
+    toast.success(user.name + 'logged out')
+    setUser(null)
   }
 
   function handleContextLogin(data) {

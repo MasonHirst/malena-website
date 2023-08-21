@@ -266,28 +266,30 @@ const ClassCollapseCard = ({ classObj, getAllSignups, handleEditSelect }) => {
         </Box>
 
         <Collapse in={isExpanded}>
-          <Box
-            sx={{
-              display: 'flex',
-              gap: '1rem',
-              margin: '1rem',
-              marginBottom: '.5rem',
-            }}
-          >
-            <Button
-              variant='contained'
-              color='secondary'
+          {signups.length > 0 && (
+            <Box
               sx={{
-                fontWeight: 'bold',
-                textTransform: 'none',
-                color: 'white',
+                display: 'flex',
+                gap: '1rem',
+                margin: '1rem',
+                marginBottom: '.5rem',
               }}
-              onClick={handleCopyAllEmails}
             >
-              {textCopied ? 'Copied!' : 'Copy emails to clipboard'}
-              {!textCopied && <ContentCopyIcon sx={{ marginLeft: '7px' }} />}
-            </Button>
-          </Box>
+              <Button
+                variant='contained'
+                color='secondary'
+                sx={{
+                  fontWeight: 'bold',
+                  textTransform: 'none',
+                  color: 'white',
+                }}
+                onClick={handleCopyAllEmails}
+              >
+                {textCopied ? 'Copied!' : 'Copy emails to clipboard'}
+                {!textCopied && <ContentCopyIcon sx={{ marginLeft: '7px' }} />}
+              </Button>
+            </Box>
+          )}
 
           <Divider
             sx={{
@@ -303,7 +305,11 @@ const ClassCollapseCard = ({ classObj, getAllSignups, handleEditSelect }) => {
                 fontStyle: 'italic',
               }}
             >
-              {signups.length ? 'Signups' : 'No signups yet'}
+              {signups.length
+                ? 'Signups'
+                : classNotOver(end_date)
+                ? 'No signups yet'
+                : 'No signups'}
             </Typography>
           </Divider>
 

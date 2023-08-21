@@ -1,0 +1,16 @@
+.footer-container {
+  width: 100%;
+  background-color: rgba(54, 69, 79, 1);
+  margin-top: 50px;
+  padding: 100px 10px;
+  color: rgba(256, 256, 256, .8);
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.footer-link {
+  cursor: pointer;
+  color: #fff !important;
+}

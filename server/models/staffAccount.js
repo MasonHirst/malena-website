@@ -16,6 +16,7 @@ const StaffAccount = db.define('staff_account', {
   email: { type: STRING, allowNull: false },
   hashed_pass: { type: STRING, allowNull: false },
   full_power: { type: BOOLEAN, defaultValue: false },
+  soft_deleted: { type: BOOLEAN, defaultValue: false },
 })
 
 module.exports = StaffAccount

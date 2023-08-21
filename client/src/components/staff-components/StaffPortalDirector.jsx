@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Route, Routes, Navigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
-import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import LoginPage from './staff-auth/LoginPage'
 import SignupPage from './staff-auth/SignupPage'
@@ -37,16 +36,6 @@ const StaffPortalDirector = () => {
 
   return (
     <>
-      <ToastContainer
-        position='top-center'
-        newestOnTop
-        draggable
-        hideProgressBar={false}
-        autoClose={3500}
-        pauseOnHover
-        pauseOnFocusLoss={false}
-        theme='light'
-      />
       {authState === 'AUTHENTICATED' ? (
         <StaffContextFunction>
           <Box

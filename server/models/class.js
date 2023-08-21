@@ -2,7 +2,7 @@ const db = require('../util/dbConfig')
 const { DataTypes, FLOAT } = require('sequelize')
 const shortid = require('shortid');
 
-const { STRING, INTEGER, ARRAY, JSON, BOOLEAN } = DataTypes
+const { STRING, INTEGER, BOOLEAN } = DataTypes
 
 const Class = db.define('class', {
   id: {
@@ -30,6 +30,7 @@ const Class = db.define('class', {
   active: { type: BOOLEAN, defaultValue: true },
   auto_show_by_date: { type: BOOLEAN, defaultValue: true },
   class_type: STRING,
+  soft_deleted: { type: BOOLEAN, defaultValue: false },
 })
 
 module.exports = Class

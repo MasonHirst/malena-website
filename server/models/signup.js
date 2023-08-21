@@ -18,6 +18,7 @@ const Signup = db.define('signup', {
   participants: { type: ARRAY(DataTypes.JSON), allowNull: false },
   comments: STRING(1000),
   paid: { type: BOOLEAN, defaultValue: false },
+  soft_deleted: { type: BOOLEAN, defaultValue: false },
 })
 
 module.exports = Signup
