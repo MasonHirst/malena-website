@@ -4,7 +4,7 @@ import { StaffContext } from '../../../context/StaffContext'
 import axios from 'axios'
 import ClassCollapseCard from './ClassCollapseCard'
 import { filterOrderClasses } from '../../../utilityFunctions'
-import NewClassForm from '../../NewClassForm'
+import NewClassForm from './NewClassForm'
 import AddIcon from '@mui/icons-material/Add'
 import { toast } from 'react-toastify'
 

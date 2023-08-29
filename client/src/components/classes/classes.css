@@ -5,6 +5,10 @@
   /* align-items: center; */
 }
 
+.sorry-img {
+  width: min(60vw, 150px);
+}
+
 @media (max-width: 400px) {
   .dialog-actions-wrapper {
     flex-direction: column;

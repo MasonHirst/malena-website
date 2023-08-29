@@ -14,8 +14,8 @@ function Header() {
     { title: 'Home', path: '/' },
     // { title: 'About', path: '/about' },
     { title: 'Classes', path: '/classes' },
-    { title: 'Admin', path: '/staff' },
-    // { title: 'Contact', path: '/contact' },
+    { title: 'Contact', path: '/contact' },
+    // { title: 'Admin', path: '/staff' },
   ]
 
   return (
@@ -49,17 +49,24 @@ function Header() {
             <MenuIcon />
           </IconButton>
         )}
-        <Typography
-          color="primary"
-          variant="h4"
-          sx={{
-            fontWeight: 'bold',
-            textAlign: 'center',
-            fontSize: { xs: '24px', sm: '32px' },
+        <a
+          style={{
+            cursor: 'pointer',
           }}
+          onClick={() => navigate('/')}
         >
-          Malena Hirst
-        </Typography>
+          <Typography
+            color='primary'
+            variant='h4'
+            sx={{
+              fontWeight: 'bold',
+              textAlign: 'center',
+              fontSize: { xs: '24px', sm: '32px' },
+            }}
+          >
+            Malena Hirst
+          </Typography>
+        </a>
       </Box>
 
       {!isSmallScreen && (
@@ -88,23 +95,25 @@ function Header() {
       )}
 
       <Drawer
-        position="left"
+        position='left'
         open={showDrawer}
         sx={{ width: '500px' }}
         onClose={() => setShowDrawer(false)}
       >
-        <Typography
-          color="primary"
-          variant="h4"
-          sx={{
-            fontWeight: 'bold',
-            textAlign: 'center',
-            fontSize: { xs: '24px', sm: '32px' },
-            margin: '20px 0',
-          }}
-        >
-          Malena Hirst
-        </Typography>
+        <a onClick={() => navigate('/')}>
+          <Typography
+            color='primary'
+            variant='h4'
+            sx={{
+              fontWeight: 'bold',
+              textAlign: 'center',
+              fontSize: { xs: '24px', sm: '32px' },
+              margin: '25px 30px',
+            }}
+          >
+            Malena Hirst
+          </Typography>
+        </a>
         {navItems.map((item, index) => (
           <MenuItem
             key={index}

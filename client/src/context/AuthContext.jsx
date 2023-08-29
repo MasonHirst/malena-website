@@ -18,7 +18,7 @@ export function Authentication({ children }) {
     localStorage.removeItem(tokenKey)
     setAccessToken(null)
     setAuthState(NOT_AUTHENTICATED)
-    toast.success(user.name + 'logged out')
+    toast.success(user.name + ' logged out')
     setUser(null)
   }
 

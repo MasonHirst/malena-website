@@ -3,8 +3,9 @@ import axios from 'axios'
 import muiStyles from '../../styles/muiStyles'
 import ClassPreviewCard from './ClassPreviewCard'
 import dayjs from 'dayjs'
+import Footer from '../Footer'
 
-const { Typography, Button, Box, Card, Skeleton } = muiStyles
+const { Typography, Box, Skeleton } = muiStyles
 
 const Classes = () => {
   const [classesLoading, setClassesLoading] = useState(false)
@@ -30,7 +31,7 @@ const Classes = () => {
       .finally(() => {
         setClassesLoading(false)
       })
-      
+
     return () => {}
   }, [])
 
@@ -41,100 +42,111 @@ const Classes = () => {
   })
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: 'min(100%, 1100px)',
-        margin: '0 auto',
-        padding: '0 10px',
-        marginTop: '40px',
-      }}
-    >
-      <Typography
-        variant='h3'
-        // color='primary'
-        sx={{
-          fontWeight: 'bold',
-          marginBottom: '40px',
-          padding: '0 10px',
-          textAlign: 'center',
-        }}
-      >
-        Summer Classes 2023!
-      </Typography>
-
+    <>
       <Box
-        id='class-cards-wrapper'
         sx={{
           display: 'flex',
-          gap: '15px',
-          flexWrap: 'wrap',
-          // padding: '0 10px',
-          width: '100%',
-          justifyContent: 'center',
-          rowGap: '30px',
-        }}
-      >
-        {classesLoading ? (
-          <Box
-            sx={{
-              display: 'flex',
-              gap: '15px',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-            }}
-          >
-            <Skeleton
-              variant='rectangular'
-              animation='wave'
-              sx={{
-                width: 'min(90vw, 320px)',
-                height: '450px',
-                borderRadius: '6px',
-              }}
-            />
-            <Skeleton
-              variant='rectangular'
-              animation='wave'
-              sx={{
-                width: 'min(90vw, 320px)',
-                height: '450px',
-                borderRadius: '6px',
-              }}
-            />
-            <Skeleton
-              variant='rectangular'
-              animation='wave'
-              sx={{
-                width: 'min(90vw, 320px)',
-                height: '450px',
-                borderRadius: '6px',
-              }}
-            />
-          </Box>
-        ) : (
-          orderedClasses.map((classObj, index) => {
-            return <ClassPreviewCard key={index} classObj={classObj} />
-          })
-        )}
-      </Box>
-      <Typography
-        color={classesError && 'error'}
-        sx={{
-          opacity: 0.7,
-          textAlign: 'center',
-          fontWeight: 'bold',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: 'min(100%, 1100px)',
+          margin: '0 auto',
+          padding: '0 10px',
           marginTop: '40px',
-          fontSize: { xs: '18px', sm: '22px' },
         }}
       >
-        {classesError
-          ? classesError
-          : 'More classes coming soon! Check back later for more info.'}
-      </Typography>
-    </Box>
+        <Typography
+          variant='h3'
+          sx={{
+            fontWeight: 'bold',
+            marginBottom: '40px',
+            padding: '0 10px',
+            textAlign: 'center',
+          }}
+        >
+          Summer Classes 2023!
+        </Typography>
+
+        <Box
+          id='class-cards-wrapper'
+          sx={{
+            display: 'flex',
+            gap: '15px',
+            flexWrap: 'wrap',
+            width: '100%',
+            justifyContent: 'center',
+            rowGap: '30px',
+          }}
+        >
+          {classesLoading ? (
+            <Box
+              sx={{
+                display: 'flex',
+                gap: '15px',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+              }}
+            >
+              <Skeleton
+                variant='rectangular'
+                animation='wave'
+                sx={{
+                  width: 'min(90vw, 320px)',
+                  height: '450px',
+                  borderRadius: '6px',
+                }}
+              />
+              <Skeleton
+                variant='rectangular'
+                animation='wave'
+                sx={{
+                  width: 'min(90vw, 320px)',
+                  height: '450px',
+                  borderRadius: '6px',
+                }}
+              />
+              <Skeleton
+                variant='rectangular'
+                animation='wave'
+                sx={{
+                  width: 'min(90vw, 320px)',
+                  height: '450px',
+                  borderRadius: '6px',
+                }}
+              />
+            </Box>
+          ) : (
+            orderedClasses.map((classObj, index) => {
+              return <ClassPreviewCard key={index} classObj={classObj} />
+            })
+          )}
+        </Box>
+        {!classesLoading && classes.length < 1 && (
+          <>
+          <img
+            src='https://res.cloudinary.com/dhbry1fw9/image/upload/v1693266097/sorry_face_d0g8ip.png'
+            alt='sorry'
+            className='sorry-img'
+            />
+            <Typography>No classes at the moment</Typography>
+            </>
+        )}
+        <Typography
+          color={classesError && 'error'}
+          sx={{
+            opacity: 0.7,
+            textAlign: 'center',
+            fontWeight: 'bold',
+            marginTop: '40px',
+            fontSize: { xs: '18px', sm: '22px' },
+          }}
+        >
+          {classesError
+            ? classesError
+            : 'More classes coming soon! Check back later for more info.'}
+        </Typography>
+      </Box>
+      <Footer />
+    </>
   )
 }
 

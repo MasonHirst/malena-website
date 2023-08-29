@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import muiStyles from '../styles/muiStyles'
 import { CircularProgress, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
@@ -8,7 +8,6 @@ const { Typography, Box, Link } = muiStyles
 
 const Footer = () => {
   const { authState, user, logout } = useContext(AuthContext)
-  console.log(user)
   const navigate = useNavigate()
   const [logoutLoading, setLogoutLoading] = useState(false)
 
@@ -22,8 +21,15 @@ const Footer = () => {
 
   return (
     <Box className='footer-container'>
-      <Stack>
-        <Typography>Malena Hirst</Typography>
+      <Stack spacing={2} className='footer-stack'>
+        <a
+          style={{
+            cursor: 'pointer',
+          }}
+          onClick={() => navigate('/')}
+        >
+          <Typography>Malena Hirst</Typography>
+        </a>
         <Typography>
           Website built by{' '}
           <a
@@ -32,19 +38,18 @@ const Footer = () => {
             className='footer-link'
           >
             Mason Hirst
-          </a>{' '}
-          using React
+          </a>
         </Typography>
       </Stack>
-      <Stack>
-        <a onClick={() => navigate('/classes')} className='footer-link'>
-          Contact me
+      <Stack spacing={2} className='footer-stack'>
+        <a className='footer-link' onClick={() => navigate('/contact')}>Contact me</a>
+        <a className='footer-link' onClick={() => navigate('/classes')}>
+          Classes
         </a>
-        <a className='footer-link'>Classes</a>
       </Stack>
 
-      <Stack>
-        {authState === 'AUTHENTICATED' && user.name && (
+      <Stack spacing={2} className='footer-stack'>
+        {authState === 'AUTHENTICATED' && user?.name && (
           <Typography>Welcome, {user.name}</Typography>
         )}
         <a onClick={() => navigate('/staff')} className='footer-link'>

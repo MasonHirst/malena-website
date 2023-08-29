@@ -9,11 +9,14 @@ import StaffPortalNav from './StaffPortalNav'
 import muiStyles from '../../styles/muiStyles'
 import { StaffContextFunction } from '../../context/StaffContext'
 import ClassesManagement from './classes/ClassesManagement'
+import Footer from '../Footer'
+import { useMediaQuery } from '@mui/material'
 const { Box } = muiStyles
 
 const StaffPortalDirector = () => {
   const { authState } = useContext(AuthContext)
   const [portalNavOpen, setPortalNavOpen] = useState(false)
+  const is800Screen = useMediaQuery('(max-width:800px)')
 
   useEffect(() => {
     document.title = 'Malena Hirst - Staff Portal'
@@ -42,6 +45,7 @@ const StaffPortalDirector = () => {
             sx={{
               display: 'flex',
               height: 'calc(100vh - 70px)',
+              flexDirection: is800Screen ? 'column' : 'row',
             }}
           >
             <StaffPortalNav
@@ -60,6 +64,7 @@ const StaffPortalDirector = () => {
                 <Route path='classes' element={<ClassesManagement />} />
                 <Route path='*' element={<Navigate to='classes' />} />
               </Routes>
+              <Footer />
             </Box>
           </Box>
         </StaffContextFunction>
@@ -74,6 +79,7 @@ const StaffPortalDirector = () => {
             <Route path='new-admin' element={<SignupPage />} />
             <Route path='*' element={<Navigate to='login' />} />
           </Routes>
+          <Footer />
         </Box>
       )}
     </>

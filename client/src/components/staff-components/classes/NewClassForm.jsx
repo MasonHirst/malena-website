@@ -23,7 +23,7 @@ import {
   DialogActions,
 } from '@mui/material'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-import { StaffContext } from '../context/StaffContext'
+import { StaffContext } from '../../../context/StaffContext'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { MobileDatePicker, TimePicker } from '@mui/x-date-pickers'
@@ -378,12 +378,13 @@ const NewClassForm = ({
               alignItems: 'center',
             }}
           >
+            Visit
             <a
               href='https://unsplash.com'
               target='_blank'
+              rel="noreferrer"
               style={{
                 color: blue[600],
-                width: '100%',
                 cursor: 'pointer',
                 width: 'fit-content',
               }}
