@@ -95,6 +95,9 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import DialogActions from '@mui/material/DialogActions'
 import Skeleton from '@mui/material/Skeleton'
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const LightTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -109,6 +112,9 @@ const LightTooltip = styled(({ className, ...props }) => (
 }))
 
 let muiStyles = {
+  InputAdornment,
+  VisibilityIcon,
+  VisibilityOffIcon,
   Skeleton,
   DialogActions,
   InputLabel,

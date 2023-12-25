@@ -42,28 +42,34 @@ const Footer = () => {
         </Typography>
       </Stack>
       <Stack spacing={2} className='footer-stack'>
-        <a className='footer-link' onClick={() => navigate('/contact')}>Contact me</a>
+        <a className='footer-link' onClick={() => navigate('/contact')}>
+          Contact me
+        </a>
         <a className='footer-link' onClick={() => navigate('/classes')}>
           Classes
         </a>
       </Stack>
 
-      <Stack spacing={2} className='footer-stack'>
-        {authState === 'AUTHENTICATED' && user?.name && (
-          <Typography>Welcome, {user.name}</Typography>
-        )}
-        <a onClick={() => navigate('/staff')} className='footer-link'>
-          {authState === 'AUTHENTICATED' ? 'Admin portal' : 'Admin login'}
-        </a>
-        {authState === 'AUTHENTICATED' &&
-          (logoutLoading ? (
-            <CircularProgress size={40} sx={{ marginLeft: '20px' }} />
-          ) : (
-            <a onClick={handleLogout} className='footer-link'>
-              Admin logout
-            </a>
-          ))}
-      </Stack>
+      {authState === 'LOADING' ? (
+        <CircularProgress size={40} sx={{ marginLeft: '20px' }} />
+      ) : (
+        <Stack spacing={2} className='footer-stack'>
+          {authState === 'AUTHENTICATED' && user?.name && (
+            <Typography>Welcome, {user.name}</Typography>
+          )}
+          <a onClick={() => navigate('/staff')} className='footer-link'>
+            {authState === 'AUTHENTICATED' ? 'Admin portal' : 'Admin login'}
+          </a>
+          {authState === 'AUTHENTICATED' &&
+            (logoutLoading ? (
+              <CircularProgress size={40} sx={{ marginLeft: '20px' }} />
+            ) : (
+              <a onClick={handleLogout} className='footer-link'>
+                Admin logout
+              </a>
+            ))}
+        </Stack>
+      )}
     </Box>
   )
 }

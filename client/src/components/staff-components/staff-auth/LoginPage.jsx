@@ -3,7 +3,7 @@ import axios from 'axios'
 import muiStyles from '../../../styles/muiStyles'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../../context/AuthContext'
-const { Avatar, Box, Typography, Button, TextField, Card, Link, blue } = muiStyles
+const { Typography, Button, TextField, Card, Link, blue } = muiStyles
 
 const LoginPage = () => {
   const { handleContextLogin } = useContext(AuthContext)
@@ -101,6 +101,9 @@ const LoginPage = () => {
 
         <Link onClick={() => navigate('../new-admin')} sx={{ color: blue[500], width: '100%', cursor: 'pointer' }} underline='hover'>
           New admin account
+        </Link>
+        <Link onClick={() => navigate('../forgot-password')} sx={{ color: blue[500], width: '100%', cursor: 'pointer' }} underline='hover'>
+          Forgot Password
         </Link>
       </form>
     </Card>

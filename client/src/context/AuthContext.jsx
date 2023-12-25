@@ -23,7 +23,10 @@ export function Authentication({ children }) {
   }
 
   function handleContextLogin(data) {
-    localStorage.setItem('malenaSiteEmailLogin', data.user.email)
+    if (data.user) {
+      setUser(data.user)
+      localStorage.setItem('malenaSiteEmailLogin', data.user.email)
+    }
     if (data.accessToken) {
       localStorage.setItem(tokenKey, data.accessToken)
       setAccessToken(data.accessToken)
@@ -41,25 +44,25 @@ export function Authentication({ children }) {
     if (jwt) {
       setAuthState(LOADING)
       axios
-      .get('/api/staff/me', { token: jwt })
-      .then(({ data }) => {
-        if (data.user) {
-          setUser(data.user)
-        }
-        if (data.accessToken) {
-          setAccessToken(data.accessToken)
-          setAuthState(AUTHENTICATED)
-        } else {
+        .get('/api/staff/me', { token: jwt })
+        .then(({ data }) => {
+          if (data.user) {
+            setUser(data.user)
+          }
+          if (data.accessToken) {
+            setAccessToken(data.accessToken)
+            setAuthState(AUTHENTICATED)
+          } else {
+            setAuthState(NOT_AUTHENTICATED)
+          }
+          if (data.error) {
+            localStorage.removeItem(tokenKey)
+          }
+        })
+        .catch((err) => {
+          console.error(err)
           setAuthState(NOT_AUTHENTICATED)
-        }
-        if (data.error) {
-          localStorage.removeItem(tokenKey)
-        }
-      })
-      .catch((err) => {
-        console.error(err)
-        setAuthState(NOT_AUTHENTICATED)
-      })
+        })
     } else {
       setAuthState(NOT_AUTHENTICATED)
     }

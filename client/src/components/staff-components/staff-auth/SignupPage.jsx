@@ -29,6 +29,8 @@ const SignupPage = () => {
     else setEmailError('')
     if (!password) return setPassError('Password is required')
     else setPassError('')
+    if (password.length < 8) return setPassError('Password must be at least 8 characters')
+    else setPassError('')
     if (!adminPass) return setAdminPassError('Admin password is required')
     else setAdminPassError('')
     if (password !== password2) return setPass2Error('Passwords do not match')

@@ -11,6 +11,8 @@ import { StaffContextFunction } from '../../context/StaffContext'
 import ClassesManagement from './classes/ClassesManagement'
 import Footer from '../Footer'
 import { useMediaQuery } from '@mui/material'
+import ForgotPassword from './staff-auth/ForgotPassword'
+import ResetPasswordPage from './staff-auth/ResetPasswordPage'
 const { Box } = muiStyles
 
 const StaffPortalDirector = () => {
@@ -77,6 +79,8 @@ const StaffPortalDirector = () => {
           <Routes>
             <Route path='login' element={<LoginPage />} />
             <Route path='new-admin' element={<SignupPage />} />
+            <Route path='forgot-password' element={<ForgotPassword />} />
+            <Route path='reset-password' element={<ResetPasswordPage />} />
             <Route path='*' element={<Navigate to='login' />} />
           </Routes>
           <Footer />
